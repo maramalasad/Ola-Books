@@ -36,7 +36,7 @@
     position: sticky;
     top: 0;
     z-index: 100;
-    box-shadow: 0 4px 20px rgba(26,74,46,0.4);
+    box-shadow: 0 2px 20px rgba(13,43,26,0.5);
   }
 
 
@@ -78,7 +78,7 @@
 
   .logo-text span {
     font-size: 0.75rem;
-    color: var(--green-light);
+    color: var(--gold-light);
     letter-spacing: 1px;
   }
 
@@ -120,71 +120,136 @@
 
   /* ===== HERO ===== */
   .hero {
-    background: linear-gradient(160deg, var(--green-dark) 0%, var(--green-mid) 60%, var(--green-accent) 100%);
-    padding: 80px 40px;
+    background: var(--green-dark);
+    padding: 0 40px;
     text-align: center;
     position: relative;
     overflow: hidden;
+    min-height: calc(100vh - 85px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
+  /* Gold arc at top */
   .hero::before {
     content: '';
     position: absolute;
-    inset: 0;
-    background-image: 
-      radial-gradient(circle at 20% 50%, rgba(201,168,76,0.08) 0%, transparent 50%),
-      radial-gradient(circle at 80% 30%, rgba(116,198,157,0.1) 0%, transparent 50%);
+    top: -180px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 900px;
+    height: 360px;
+    border-radius: 50%;
+    background: radial-gradient(ellipse at center, rgba(201,168,76,0.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* Subtle bottom glow */
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 700px;
+    height: 280px;
+    border-radius: 50%;
+    background: radial-gradient(ellipse at center, rgba(64,145,108,0.25) 0%, transparent 70%);
+    pointer-events: none;
   }
 
   .hero-pattern {
     position: absolute;
     inset: 0;
-    opacity: 0.04;
-    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M30 0L37.5 22.5L60 30L37.5 37.5L30 60L22.5 37.5L0 30L22.5 22.5z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9a84c' fill-opacity='1'%3E%3Cpath d='M30 0L37.5 22.5L60 30L37.5 37.5L30 60L22.5 37.5L0 30L22.5 22.5z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    pointer-events: none;
   }
 
-  .hero-content { position: relative; z-index: 1; }
+  .hero-content { position: relative; z-index: 1; width: 100%; max-width: 700px; padding: 60px 0; }
 
+  /* Gold divider lines around badge */
   .hero-badge {
-    display: inline-block;
-    background: rgba(201,168,76,0.2);
-    border: 1px solid var(--gold);
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: transparent;
+    border: 1.5px solid rgba(201,168,76,0.5);
     color: var(--gold-light);
-    padding: 6px 20px;
-    border-radius: 20px;
-    font-size: 0.85rem;
-    margin-bottom: 20px;
+    padding: 8px 24px;
+    border-radius: 30px;
+    font-size: 0.88rem;
+    margin-bottom: 32px;
     letter-spacing: 2px;
+    font-weight: 500;
+  }
+
+  .hero-badge::before,
+  .hero-badge::after {
+    content: '✦';
+    font-size: 0.6rem;
+    color: var(--gold);
+    opacity: 0.8;
+  }
+
+  /* Gold line above the Ayah */
+  .hero-line {
+    width: 80px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 0 auto 20px;
   }
 
   .hero h2 {
     font-family: 'Amiri', serif;
-    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-size: clamp(2.2rem, 5.5vw, 3.6rem);
     color: var(--white);
-    line-height: 1.4;
-    margin-bottom: 16px;
-    text-shadow: 0 2px 20px rgba(0,0,0,0.3);
+    line-height: 1.5;
+    margin-bottom: 8px;
+    text-shadow: 0 2px 24px rgba(0,0,0,0.25);
+  }
+
+  /* Gold underline below Ayah */
+  .hero-underline {
+    width: 100px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 0 auto 28px;
   }
 
   .hero p {
-    color: var(--green-pale);
-    font-size: 1.05rem;
+    color: rgba(216,243,220,0.85);
+    font-size: 1.1rem;
     max-width: 500px;
-    margin: 0 auto 32px;
-    line-height: 1.8;
+    margin: 0 auto 40px;
+    line-height: 2;
     font-weight: 300;
+    letter-spacing: 0.2px;
   }
 
   .hero-scroll {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    color: var(--gold-light);
-    font-size: 0.9rem;
+    gap: 10px;
+    color: var(--green-dark);
+    font-size: 0.97rem;
+    font-weight: 700;
     cursor: pointer;
     border: none;
-    background: none;
+    background: var(--gold);
     font-family: 'Tajawal', sans-serif;
+    padding: 14px 36px;
+    border-radius: 30px;
+    transition: all 0.3s;
+    box-shadow: 0 6px 24px rgba(201,168,76,0.4);
+    letter-spacing: 0.3px;
+  }
+
+  .hero-scroll:hover {
+    background: var(--gold-light);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 32px rgba(201,168,76,0.55);
   }
 
   /* ===== SECTION ===== */
@@ -220,15 +285,15 @@
   }
 
   .section-title p {
-    color: var(--green-accent);
+    color: #7a9a88;
     font-size: 0.9rem;
     margin-top: 6px;
   }
 
   /* ===== BOOKS GRID ===== */
   .books-section {
-    background: var(--off-white);
-    padding: 0 40px 40px;
+    background: #fafbf8;
+    padding: 0 40px 60px;
   }
 
   .books-grid {
@@ -243,9 +308,9 @@
     background: var(--white);
     border-radius: 20px;
     overflow: hidden;
-    box-shadow: 0 4px 24px rgba(26,74,46,0.08);
+    box-shadow: 0 2px 16px rgba(26,74,46,0.06);
     transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-    border: 1px solid rgba(26,74,46,0.07);
+    border: 1px solid #ede8de;
     animation: fadeUp 0.6s ease both;
   }
 
@@ -271,9 +336,9 @@
     overflow: hidden;
   }
 
-  .book-cover-1 { background: linear-gradient(135deg, #1a4a2e, #2d6a4f); }
-  .book-cover-2 { background: linear-gradient(135deg, #2c3e50, #1a4a2e); }
-  .book-cover-3 { background: linear-gradient(135deg, #1a3a4a, #1a4a2e); }
+  .book-cover-1 { background: linear-gradient(150deg, #1a4a2e 0%, #2d6a4f 100%); }
+  .book-cover-2 { background: linear-gradient(150deg, #7a5c1e 0%, #c9a84c 100%); }
+  .book-cover-3 { background: linear-gradient(150deg, #2c3e50 0%, #1a4a2e 100%); }
 
   .book-cover-design {
     width: 120px;
@@ -463,7 +528,7 @@
   .cart-items {
     flex: 1;
     overflow-y: auto;
-    padding: 20px;
+    padding: 16px 20px;
     min-height: 0;
   }
 
@@ -476,76 +541,120 @@
   .cart-empty .empty-icon { font-size: 3rem; margin-bottom: 12px; }
 
   .cart-item {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 14px;
-    background: var(--off-white);
-    border-radius: 14px;
-    margin-bottom: 12px;
+    background: var(--white);
+    border: 1.5px solid #d6eedd;
+    border-radius: 16px;
+    margin-bottom: 14px;
+    overflow: hidden;
     animation: slideIn 0.3s ease;
+    box-shadow: 0 2px 10px rgba(26,74,46,0.07);
   }
 
   @keyframes slideIn {
-    from { opacity: 0; transform: translateX(-20px); }
-    to { opacity: 1; transform: translateX(0); }
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .cart-item-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px 10px;
   }
 
   .cart-item-icon {
-    width: 48px;
-    height: 48px;
-    background: var(--green-dark);
-    border-radius: 10px;
+    width: 46px;
+    height: 46px;
+    background: linear-gradient(135deg, var(--green-dark), var(--green-mid));
+    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.3rem;
+    font-size: 1.4rem;
     flex-shrink: 0;
+    box-shadow: 0 3px 8px rgba(26,74,46,0.25);
   }
 
-  .cart-item-info { flex: 1; }
+  .cart-item-info { flex: 1; min-width: 0; }
 
   .cart-item-name {
     font-family: 'Amiri', serif;
-    font-size: 1.05rem;
+    font-size: 1.1rem;
     color: var(--green-dark);
-    margin-bottom: 4px;
+    font-weight: 700;
+    line-height: 1.3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .cart-item-unit-price {
+    font-size: 0.78rem;
+    color: #8aaa9a;
+    margin-top: 2px;
+  }
+
+  .cart-item-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--green-pale);
+    padding: 10px 16px;
+    border-top: 1px solid #c8e6d0;
   }
 
   .cart-item-price {
-    font-size: 0.85rem;
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--green-dark);
+  }
+
+  .cart-item-price span {
+    font-size: 0.75rem;
+    font-weight: 400;
     color: var(--green-accent);
-    font-weight: 600;
+    margin-right: 3px;
   }
 
   .cart-item-qty {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 0;
+    background: var(--white);
+    border-radius: 10px;
+    border: 1.5px solid #b8d8c4;
+    overflow: hidden;
   }
 
   .qty-btn {
-    width: 28px;
-    height: 28px;
-    border: 1.5px solid var(--green-light);
-    background: var(--white);
-    border-radius: 8px;
+    width: 34px;
+    height: 34px;
+    border: none;
+    background: transparent;
     cursor: pointer;
-    font-size: 1rem;
+    font-size: 1.2rem;
+    font-weight: 700;
     color: var(--green-dark);
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.2s;
+    transition: background 0.2s;
+    line-height: 1;
   }
 
   .qty-btn:hover { background: var(--green-pale); }
+  .qty-btn:active { background: #b8d8c4; }
 
   .qty-num {
-    font-weight: 700;
+    font-weight: 800;
+    font-size: 1rem;
     color: var(--green-dark);
-    min-width: 20px;
+    min-width: 32px;
     text-align: center;
+    border-right: 1px solid #d0e8d8;
+    border-left: 1px solid #d0e8d8;
+    height: 34px;
+    line-height: 34px;
   }
 
   .cart-footer {
@@ -657,10 +766,12 @@
 
   /* ===== FEATURES ===== */
   .features {
-    background: var(--green-dark);
+    background: #fff;
     padding: 60px 40px;
     position: relative;
     z-index: 1;
+    border-top: 1px solid #eef4f0;
+    border-bottom: 1px solid #eef4f0;
   }
 
   .features-grid {
@@ -673,7 +784,15 @@
 
   .feature-item {
     text-align: center;
-    color: var(--white);
+    padding: 28px 20px;
+    border-radius: 18px;
+    background: #f7fbf8;
+    border: 1px solid #ddeee4;
+    transition: box-shadow 0.3s;
+  }
+
+  .feature-item:hover {
+    box-shadow: 0 6px 24px rgba(26,74,46,0.10);
   }
 
   .feature-icon {
@@ -686,19 +805,19 @@
     font-family: 'Amiri', serif;
     font-size: 1.2rem;
     margin-bottom: 8px;
-    color: var(--gold-light);
+    color: var(--green-dark);
   }
 
   .feature-item p {
     font-size: 0.85rem;
-    color: var(--green-light);
+    color: #5a7a6a;
     line-height: 1.7;
   }
 
   /* ===== FOOTER ===== */
   footer {
-    background: #0d2b1a;
-    padding: 40px;
+    background: var(--green-dark);
+    padding: 48px 40px;
     text-align: center;
     position: relative;
     z-index: 2;
@@ -706,23 +825,23 @@
 
   .footer-logo {
     font-family: 'Amiri', serif;
-    font-size: 1.8rem;
+    font-size: 2rem;
     color: var(--gold);
     margin-bottom: 10px;
+    letter-spacing: 1px;
   }
 
   footer p {
-    color: #4a7a5a;
-    font-size: 0.85rem;
-    line-height: 1.8;
+    color: rgba(216,243,220,0.65);
+    font-size: 0.87rem;
+    line-height: 1.9;
   }
 
   .footer-divider {
-    width: 60px;
-    height: 2px;
-    background: var(--gold);
+    width: 50px;
+    height: 1.5px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
     margin: 16px auto;
-    opacity: 0.4;
   }
 
   /* ===== TOAST ===== */
@@ -759,7 +878,7 @@
     .cart-btn { padding: 8px 14px; font-size: 0.85rem; }
     .books-section { padding: 0 12px 80px; }
     .books-grid { grid-template-columns: 1fr; gap: 20px; }
-    .hero { padding: 50px 16px; }
+    .hero { padding: 0 20px; min-height: calc(100vh - 65px); }
     .hero h2 { font-size: 1.8rem; }
     .features { padding: 40px 16px; }
     .features-grid { grid-template-columns: 1fr; gap: 24px; }
@@ -802,10 +921,11 @@
 
   /* How to order section */
   .how-to-order {
-    background: var(--off-white);
+    background: #f7fbf8;
     padding: 60px 40px;
     position: relative;
     z-index: 2;
+    border-top: 1px solid #eef4f0;
   }
 
   .how-steps {
@@ -821,8 +941,14 @@
     padding: 28px 20px;
     background: var(--white);
     border-radius: 20px;
-    box-shadow: 0 4px 20px rgba(26,74,46,0.07);
-    border: 1px solid rgba(26,74,46,0.07);
+    box-shadow: 0 2px 16px rgba(26,74,46,0.06);
+    border: 1px solid #ede8de;
+    transition: box-shadow 0.3s, border-color 0.3s;
+  }
+
+  .how-step:hover {
+    border-color: var(--gold);
+    box-shadow: 0 6px 24px rgba(201,168,76,0.15);
   }
 
   .step-number {
@@ -880,6 +1006,184 @@
     transform: translateY(-2px);
     box-shadow: 0 8px 28px rgba(37,211,102,0.5);
   }
+
+  /* ===== CART TABS ===== */
+  .cart-tabs {
+    display: flex;
+    background: var(--green-dark);
+    padding: 0 16px 14px;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+
+  .cart-tab {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 11px 10px;
+    border: none;
+    border-radius: 12px;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s;
+    background: rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.65);
+    position: relative;
+  }
+
+  .cart-tab.active {
+    background: var(--gold);
+    color: var(--green-dark);
+    box-shadow: 0 4px 14px rgba(201,168,76,0.4);
+  }
+
+  .cart-tab:not(.active):hover {
+    background: rgba(255,255,255,0.18);
+    color: var(--white);
+  }
+
+  .tab-icon { font-size: 1rem; }
+
+  .tab-badge {
+    background: var(--green-dark);
+    color: var(--white);
+    border-radius: 20px;
+    padding: 1px 7px;
+    font-size: 0.72rem;
+    font-weight: 800;
+    min-width: 20px;
+    text-align: center;
+  }
+
+  .cart-tab.active .tab-badge {
+    background: var(--green-dark);
+    color: var(--gold-light);
+  }
+
+  .tab-content {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Next button */
+  .next-tab-btn {
+    width: 100%;
+    background: var(--green-dark);
+    color: var(--white);
+    border: none;
+    padding: 13px;
+    border-radius: 14px;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 0.97rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.3s;
+    letter-spacing: 0.3px;
+  }
+
+  .next-tab-btn:hover {
+    background: var(--green-mid);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(26,74,46,0.3);
+  }
+
+
+  /* ===== REGION SELECTOR ===== */
+  .region-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 6px;
+  }
+
+  .region-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 14px 8px;
+    border: 2px solid #d6eedd;
+    border-radius: 14px;
+    background: var(--white);
+    cursor: pointer;
+    font-family: 'Tajawal', sans-serif;
+    transition: all 0.25s;
+  }
+
+  .region-btn:hover {
+    border-color: var(--green-accent);
+    background: var(--green-pale);
+  }
+
+  .region-btn.selected {
+    border-color: var(--green-dark);
+    background: var(--green-dark);
+  }
+
+  .region-name {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--green-dark);
+    transition: color 0.25s;
+  }
+
+  .region-btn.selected .region-name {
+    color: var(--white);
+  }
+
+  .region-fee {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--green-accent);
+    background: var(--green-pale);
+    padding: 2px 8px;
+    border-radius: 20px;
+    transition: all 0.25s;
+  }
+
+  .region-btn.selected .region-fee {
+    background: var(--gold);
+    color: var(--green-dark);
+  }
+
+  /* Delivery summary */
+  .delivery-summary {
+    background: var(--green-pale);
+    border: 1.5px solid #b8d8c4;
+    border-radius: 14px;
+    padding: 14px 16px;
+    margin: 14px 0 4px;
+  }
+
+  .delivery-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.88rem;
+    color: var(--green-mid);
+    padding: 5px 0;
+  }
+
+  .delivery-total-row {
+    border-top: 1.5px dashed #9cccb0;
+    margin-top: 6px;
+    padding-top: 10px;
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--green-dark);
+  }
+
 </style>
 </head>
 <body>
@@ -908,9 +1212,11 @@
 <section class="hero">
   <div class="hero-pattern"></div>
   <div class="hero-content">
-    <div class="hero-badge">✦ مكتبتك الإسلامية الموثوقة ✦</div>
-    <h2 style="font-size:clamp(1.6rem,4vw,2.6rem);">﴿ اقْرَأْ بِاسْمِ رَبِّكَ الَّذِي خَلَقَ ﴾</h2>
-    <p>اختر من مجموعتنا المتميزة من المصاحف الكريمة والكتب الشرعية المختارة بعناية</p>
+    <div class="hero-badge">مكتبتك الإسلامية الموثوقة</div>
+    <div class="hero-line"></div>
+    <h2>﴿ اقْرَأْ بِاسْمِ رَبِّكَ الَّذِي خَلَقَ ﴾</h2>
+    <div class="hero-underline"></div>
+    <p>اختر من مجموعتنا المتميزة من المصاحف الكريمة<br>والكتب الشرعية المختارة بعناية</p>
     <button class="hero-scroll" onclick="document.querySelector('.books-section').scrollIntoView({behavior:'smooth'})">
       تصفح الكتب ↓
     </button>
@@ -1043,52 +1349,114 @@
 
 <!-- CART PANEL -->
 <div class="cart-panel" id="cartPanel">
+
+  <!-- Header -->
   <div class="cart-header">
     <h3>🛒 سلة الطلبات</h3>
     <button class="close-btn" onclick="closeCart()">✕</button>
   </div>
 
-  <div class="cart-items" id="cartItems">
-    <div class="cart-empty" id="cartEmpty">
-      <div class="empty-icon">📚</div>
-      <p>سلتك فارغة<br>أضف كتباً لتبدأ طلبك</p>
-    </div>
-  </div>
-
-  <!-- Scrollable: total + form fields -->
-  <div id="checkoutSection" style="display:none; flex:1; overflow-y:auto; min-height:0; background:var(--off-white); padding:16px 20px;">
-    <div class="cart-total">
-      <span>المجموع الكلي</span>
-      <strong id="totalPrice">0 شيقل</strong>
-    </div>
-    <h4 style="font-family:'Amiri',serif;color:var(--green-dark);font-size:1.1rem;margin-bottom:14px;">📋 بياناتك للتوصيل</h4>
-    <div class="form-group">
-      <label>الاسم الكامل *</label>
-      <input type="text" id="custName" placeholder="أدخل اسمك الكامل">
-    </div>
-    <div class="form-group">
-      <label>رقم الهاتف *</label>
-      <input type="tel" id="custPhone" placeholder="05xxxxxxxx">
-    </div>
-    <div class="form-group">
-      <label>المدينة والحي *</label>
-      <input type="text" id="custCity" placeholder="">
-    </div>
-    <div class="form-group">
-      <label>ملاحظات (اختياري)</label>
-      <textarea id="custNotes" placeholder="أي تفاصيل إضافية..."></textarea>
-    </div>
-  </div>
-
-  <!-- Fixed bottom: WhatsApp button always visible -->
-  <div id="whatsappBar" style="display:none; flex-shrink:0; padding:16px 20px; background:#fff; border-top:2px solid var(--green-pale); box-shadow:0 -4px 20px rgba(26,74,46,0.12);">
-    <button class="whatsapp-btn" onclick="sendToWhatsApp()">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-      </svg>
-      إرسال الطلب عبر واتساب
+  <!-- Tabs -->
+  <div class="cart-tabs" id="cartTabs" style="display:none;">
+    <button class="cart-tab active" id="tabOrders" onclick="switchTab('orders')">
+      <span class="tab-icon">📦</span>
+      <span>طلباتي</span>
+      <span class="tab-badge" id="tabBadge">0</span>
+    </button>
+    <button class="cart-tab" id="tabDetails" onclick="switchTab('details')">
+      <span class="tab-icon">📋</span>
+      <span>بيانات التوصيل</span>
     </button>
   </div>
+
+  <!-- TAB 1: Orders -->
+  <div id="tabOrdersContent" class="tab-content" style="display:flex; flex-direction:column; flex:1; min-height:0;">
+    <div class="cart-items" id="cartItems">
+      <div class="cart-empty" id="cartEmpty">
+        <div class="empty-icon">📚</div>
+        <p>سلتك فارغة<br>أضف كتباً لتبدأ طلبك</p>
+      </div>
+    </div>
+    <!-- Total + Next button -->
+    <div id="orderFooter" style="display:none; flex-shrink:0; padding:16px 20px; background:#fff; border-top:2px solid var(--green-pale); box-shadow:0 -4px 16px rgba(26,74,46,0.10);">
+      <div class="cart-total" style="margin-bottom:14px;">
+        <span>المجموع الكلي</span>
+        <strong id="totalPrice">0 شيقل</strong>
+      </div>
+      <button class="next-tab-btn" onclick="switchTab('details')">
+        التالي: بيانات التوصيل ←
+      </button>
+    </div>
+  </div>
+
+  <!-- TAB 2: Delivery Details -->
+  <div id="tabDetailsContent" class="tab-content" style="display:none; flex-direction:column; flex:1; min-height:0;">
+    <div style="flex:1; overflow-y:auto; padding:20px;">
+      <h4 style="font-family:'Amiri',serif;color:var(--green-dark);font-size:1.15rem;margin-bottom:18px;">📋 بياناتك للتوصيل</h4>
+
+      <!-- Region selector -->
+      <div class="form-group">
+        <label>منطقة التوصيل *</label>
+        <div class="region-grid">
+          <button class="region-btn" data-region="الشمال" data-fee="70" onclick="selectRegion(this)">
+            <span class="region-name">الشمال</span>
+            <span class="region-fee">70 ₪</span>
+          </button>
+          <button class="region-btn" data-region="الجنوب" data-fee="40" onclick="selectRegion(this)">
+            <span class="region-name">الجنوب</span>
+            <span class="region-fee">40 ₪</span>
+          </button>
+          <button class="region-btn" data-region="رهط" data-fee="20" onclick="selectRegion(this)">
+            <span class="region-name">رهط</span>
+            <span class="region-fee">20 ₪</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Delivery summary box (shown after region selected) -->
+      <div class="delivery-summary" id="deliverySummary" style="display:none;">
+        <div class="delivery-row">
+          <span>قيمة الكتب</span>
+          <span id="summaryBooks">0 شيقل</span>
+        </div>
+        <div class="delivery-row">
+          <span>رسوم التوصيل (<span id="summaryRegion"></span>)</span>
+          <span id="summaryFee">0 شيقل</span>
+        </div>
+        <div class="delivery-row delivery-total-row">
+          <span>الإجمالي الكلي</span>
+          <span id="summaryTotal">0 شيقل</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>الاسم الكامل *</label>
+        <input type="text" id="custName" placeholder="أدخل اسمك الكامل">
+      </div>
+      <div class="form-group">
+        <label>رقم الهاتف *</label>
+        <input type="tel" id="custPhone" placeholder="05xxxxxxxx">
+      </div>
+      <div class="form-group">
+        <label>الحي / العنوان التفصيلي *</label>
+        <input type="text" id="custCity" placeholder="مثال: حي النخيل، شارع الملك">
+      </div>
+      <div class="form-group">
+        <label>ملاحظات (اختياري)</label>
+        <textarea id="custNotes" placeholder="أي تفاصيل إضافية..."></textarea>
+      </div>
+    </div>
+    <!-- WhatsApp send button -->
+    <div style="flex-shrink:0; padding:16px 20px; background:#fff; border-top:2px solid var(--green-pale); box-shadow:0 -4px 20px rgba(26,74,46,0.12);">
+      <button class="whatsapp-btn" onclick="sendToWhatsApp()">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+        </svg>
+        تثبيت الطلب عبر واتساب
+      </button>
+    </div>
+  </div>
+
 </div>
 
 <!-- TOAST -->
@@ -1116,54 +1484,100 @@
     showToast(`تمت إضافة "${name}" للسلة`);
   }
 
+  // Hold a permanent reference to the empty-state element
+  let _cartEmptyEl = null;
+  document.addEventListener('DOMContentLoaded', function() {
+    _cartEmptyEl = document.getElementById('cartEmpty');
+  });
+
   function updateCartUI() {
     const total = Object.values(cart).reduce((s, i) => s + i.price * i.qty, 0);
     const count = Object.values(cart).reduce((s, i) => s + i.qty, 0);
-    document.getElementById('cartCount').textContent = count;
+
+    const countEl = document.getElementById('cartCount');
+    if (countEl) countEl.textContent = count;
 
     const itemsDiv = document.getElementById('cartItems');
-    const cartEmpty = document.getElementById('cartEmpty');
-    const checkoutSection = document.getElementById('checkoutSection');
-    const whatsappBar = document.getElementById('whatsappBar');
+
+    if (!_cartEmptyEl) _cartEmptyEl = document.getElementById('cartEmpty');
+
+    // Detach empty element before wiping innerHTML so we keep the reference
+    if (_cartEmptyEl && _cartEmptyEl.parentNode === itemsDiv) {
+      itemsDiv.removeChild(_cartEmptyEl);
+    }
+    itemsDiv.innerHTML = '';
 
     if (count === 0) {
-      itemsDiv.innerHTML = '';
-      itemsDiv.appendChild(cartEmpty);
-      cartEmpty.style.display = 'block';
-      checkoutSection.style.display = 'none';
-      whatsappBar.style.display = 'none';
+      _cartEmptyEl.style.display = 'block';
+      itemsDiv.appendChild(_cartEmptyEl);
+      const of2 = document.getElementById('orderFooter');
+      const ct2 = document.getElementById('cartTabs');
+      if (of2) of2.style.display = 'none';
+      if (ct2) ct2.style.display = 'none';
+      switchTab('orders');
       return;
     }
 
-    cartEmpty.style.display = 'none';
-    checkoutSection.style.display = 'block';
-    whatsappBar.style.display = 'block';
-    document.getElementById('totalPrice').textContent = total.toFixed(2) + ' شيقل';
-
-    itemsDiv.innerHTML = '';
-    for (const [name, item] of Object.entries(cart)) {
+    // Render each cart item
+    for (const [itemName, item] of Object.entries(cart)) {
       const el = document.createElement('div');
       el.className = 'cart-item';
-      el.innerHTML = `
-        <div class="cart-item-icon">${item.icon}</div>
-        <div class="cart-item-info">
-          <div class="cart-item-name">${name}</div>
-          <div class="cart-item-price">${(item.price * item.qty).toFixed(2)} شيقل</div>
-        </div>
-        <div class="cart-item-qty">
-          <button class="qty-btn" onclick="changeQty('${name}', -1)">−</button>
-          <span class="qty-num">${item.qty}</span>
-          <button class="qty-btn" onclick="changeQty('${name}', 1)">+</button>
-        </div>
-      `;
+      el.innerHTML =
+        '<div class="cart-item-top">' +
+          '<div class="cart-item-icon">' + item.icon + '</div>' +
+          '<div class="cart-item-info">' +
+            '<div class="cart-item-name">' + itemName + '</div>' +
+            '<div class="cart-item-unit-price">' + item.price.toFixed(2) + ' شيقل / نسخة</div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="cart-item-bottom">' +
+          '<div class="cart-item-price">' + (item.price * item.qty).toFixed(2) + ' <span>شيقل</span></div>' +
+          '<div class="cart-item-qty">' +
+            '<button class="qty-btn qty-minus">−</button>' +
+            '<span class="qty-num">' + item.qty + '</span>' +
+            '<button class="qty-btn qty-plus">+</button>' +
+          '</div>' +
+        '</div>';
+      // Closure over itemName
+      (function(n) {
+        el.querySelector('.qty-minus').addEventListener('click', function() { changeQty(n, -1); });
+        el.querySelector('.qty-plus').addEventListener('click', function() { changeQty(n, 1); });
+      })(itemName);
       itemsDiv.appendChild(el);
     }
+
+    document.getElementById('orderFooter').style.display = 'block';
+    document.getElementById('cartTabs').style.display = 'flex';
+    document.getElementById('tabBadge').textContent = count;
+    document.getElementById('totalPrice').textContent = total.toFixed(2) + ' شيقل';
   }
 
   function changeQty(name, delta) {
+    if (!cart[name]) return;
     cart[name].qty += delta;
     if (cart[name].qty <= 0) delete cart[name];
     updateCartUI();
+  }
+
+
+  function switchTab(tab) {
+    const ordersContent = document.getElementById('tabOrdersContent');
+    const detailsContent = document.getElementById('tabDetailsContent');
+    const tabOrders = document.getElementById('tabOrders');
+    const tabDetails = document.getElementById('tabDetails');
+    if (!ordersContent) return;
+
+    if (tab === 'orders') {
+      ordersContent.style.display = 'flex';
+      detailsContent.style.display = 'none';
+      tabOrders.classList.add('active');
+      tabDetails.classList.remove('active');
+    } else {
+      ordersContent.style.display = 'none';
+      detailsContent.style.display = 'flex';
+      tabOrders.classList.remove('active');
+      tabDetails.classList.add('active');
+    }
   }
 
   function openCart() {
@@ -1183,40 +1597,69 @@
     setTimeout(() => t.classList.remove('show'), 3000);
   }
 
+  // Delivery region state
+  let selectedRegion = null;
+  let deliveryFee = 0;
+
+  function selectRegion(btn) {
+    // Deselect all
+    document.querySelectorAll('.region-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    selectedRegion = btn.getAttribute('data-region');
+    deliveryFee = parseInt(btn.getAttribute('data-fee'));
+
+    // Update summary box
+    const booksTotal = Object.values(cart).reduce((s, i) => s + i.price * i.qty, 0);
+    const grandTotal = booksTotal + deliveryFee;
+
+    document.getElementById('summaryBooks').textContent = booksTotal.toFixed(2) + ' شيقل';
+    document.getElementById('summaryRegion').textContent = selectedRegion;
+    document.getElementById('summaryFee').textContent = deliveryFee + ' شيقل';
+    document.getElementById('summaryTotal').textContent = grandTotal.toFixed(2) + ' شيقل';
+    document.getElementById('deliverySummary').style.display = 'block';
+  }
+
   function sendToWhatsApp() {
     const name = document.getElementById('custName').value.trim();
     const phone = document.getElementById('custPhone').value.trim();
     const city = document.getElementById('custCity').value.trim();
     const notes = document.getElementById('custNotes').value.trim();
 
+    if (!selectedRegion) {
+      showToast('⚠️ يرجى اختيار منطقة التوصيل');
+      return;
+    }
     if (!name || !phone || !city) {
       showToast('⚠️ يرجى تعبئة جميع الحقول المطلوبة');
       return;
     }
 
     const items = Object.entries(cart).map(([n, i]) =>
-      `  • ${n} × ${i.qty} = ${(i.price * i.qty).toFixed(2)} شيقل`
+      '  • ' + n + ' × ' + i.qty + ' = ' + (i.price * i.qty).toFixed(2) + ' شيقل'
     ).join('\n');
 
-    const total = Object.values(cart).reduce((s, i) => s + i.price * i.qty, 0);
+    const booksTotal = Object.values(cart).reduce((s, i) => s + i.price * i.qty, 0);
+    const grandTotal = booksTotal + deliveryFee;
 
-    const msg = `
-🛒 *طلب جديد من مكتبة على أثره*
-━━━━━━━━━━━━━━
-📚 *الكتب المطلوبة:*
-${items}
+    const msg = (
+      '🛒 *طلب جديد من مكتبة على أثره*\n' +
+      '━━━━━━━━━━━━━━\n' +
+      '📚 *الكتب المطلوبة:*\n' +
+      items + '\n\n' +
+      '💰 *قيمة الكتب:* ' + booksTotal.toFixed(2) + ' شيقل\n' +
+      '🚚 *رسوم التوصيل (' + selectedRegion + '):* ' + deliveryFee + ' شيقل\n' +
+      '✅ *الإجمالي الكلي:* ' + grandTotal.toFixed(2) + ' شيقل\n' +
+      '━━━━━━━━━━━━━━\n' +
+      '👤 *بيانات العميل:*\n' +
+      'الاسم: ' + name + '\n' +
+      'الهاتف: ' + phone + '\n' +
+      'المنطقة: ' + selectedRegion + '\n' +
+      'العنوان: ' + city + '\n' +
+      (notes ? '📝 ملاحظات: ' + notes + '\n' : '') +
+      '━━━━━━━━━━━━━━'
+    );
 
-💰 *الإجمالي:* ${total.toFixed(2)} شيقل
-━━━━━━━━━━━━━━
-👤 *بيانات العميل:*
-الاسم: ${name}
-الهاتف: ${phone}
-العنوان: ${city}
-${notes ? '📝 ملاحظات: ' + notes : ''}
-━━━━━━━━━━━━━━
-    `.trim();
-
-    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+    const url = 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(msg);
     window.open(url, '_blank');
   }
 </script>
