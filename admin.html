@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>لوحة التحكم — مكتبة على أثره</title>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green-dark: #1a4a2e;
+    --green-mid: #2d6a4f;
+    --green-accent: #40916c;
+    --green-pale: #d8f3dc;
+    --gold: #c9a84c;
+    --gold-light: #f0d080;
+    --white: #ffffff;
+    --off-white: #f8faf8;
+    --red: #e74c3c;
+    --red-light: #fdecea;
+    --text-dark: #0d2b1a;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100%; min-height: 100vh; font-family: 'Tajawal', sans-serif; background: #f0f4f1; color: var(--text-dark); }
+
+  /* ===== LOGIN SCREEN ===== */
+  #loginScreen {
+    position: fixed; inset: 0; background: var(--green-dark);
+    display: flex; align-items: center; justify-content: center; z-index: 9999;
+  }
+  .login-box {
+    background: var(--white); border-radius: 24px; padding: 48px 40px;
+    width: 100%; max-width: 400px; text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  }
+  .login-logo { font-family: 'Amiri', serif; font-size: 1.8rem; color: var(--green-dark); margin-bottom: 6px; }
+  .login-sub { font-size: 0.85rem; color: #8aaa9a; margin-bottom: 32px; }
+  .login-box input {
+    width: 100%; padding: 14px 18px; border: 2px solid #d0e8d8; border-radius: 12px;
+    font-family: 'Tajawal', sans-serif; font-size: 1rem; text-align: center;
+    outline: none; margin-bottom: 16px; transition: border-color 0.2s;
+    direction: ltr; letter-spacing: 4px;
+  }
+  .login-box input:focus { border-color: var(--green-accent); }
+  .login-btn {
+    width: 100%; background: var(--green-dark); color: var(--white); border: none;
+    padding: 14px; border-radius: 12px; font-family: 'Tajawal', sans-serif;
+    font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.3s;
+  }
+  .login-btn:hover { background: var(--green-mid); }
+  .login-error { color: var(--red); font-size: 0.85rem; margin-top: 10px; display: none; }
+
+  /* ===== ADMIN LAYOUT ===== */
+  #adminApp { display: none; }
+  .admin-header {
+    background: var(--green-dark); padding: 0 clamp(16px,4vw,40px);
+    position: sticky; top: 0; z-index: 100;
+    box-shadow: 0 2px 20px rgba(13,43,26,0.5);
+  }
+  .admin-header-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 0; max-width: 1200px; margin: 0 auto;
+  }
+  .admin-title { font-family: 'Amiri', serif; color: var(--white); font-size: 1.4rem; }
+  .admin-title span { color: var(--gold-light); font-size: 0.8rem; font-family: 'Tajawal', sans-serif; display: block; }
+  .logout-btn {
+    background: rgba(255,255,255,0.15); color: var(--white); border: none;
+    padding: 8px 18px; border-radius: 20px; font-family: 'Tajawal', sans-serif;
+    font-size: 0.88rem; cursor: pointer; transition: background 0.2s;
+  }
+  .logout-btn:hover { background: rgba(255,255,255,0.25); }
+  .publish-btn {
+    background: var(--gold); color: var(--green-dark); border: none;
+    padding: 8px 20px; border-radius: 20px; font-family: 'Tajawal', sans-serif;
+    font-size: 0.88rem; font-weight: 700; cursor: pointer; transition: all 0.25s;
+    display: flex; align-items: center; gap: 7px;
+  }
+  .publish-btn:hover { background: var(--gold-light); transform: translateY(-1px); }
+  .publish-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+  .publish-btn .pub-icon { font-size: 1rem; }
+  /* Publish Modal */
+  .pub-modal-overlay { position: fixed; inset: 0; background: rgba(13,43,26,0.55); z-index: 500; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(4px); opacity: 0; visibility: hidden; transition: all 0.3s; }
+  .pub-modal-overlay.show { opacity: 1; visibility: visible; }
+  .pub-modal { background: var(--white); border-radius: 20px; padding: 36px 32px; max-width: 420px; width: 92%; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.25); transform: translateY(20px); transition: transform 0.3s; }
+  .pub-modal-overlay.show .pub-modal { transform: translateY(0); }
+  .pub-modal-icon { font-size: 2.8rem; margin-bottom: 12px; }
+  .pub-modal-title { font-family: 'Amiri', serif; font-size: 1.5rem; color: var(--green-dark); margin-bottom: 8px; }
+  .pub-modal-msg { color: #5a7a6a; font-size: 0.92rem; line-height: 1.8; margin-bottom: 24px; }
+  .pub-modal-progress { width: 100%; height: 6px; background: #e8f0eb; border-radius: 10px; overflow: hidden; margin-bottom: 20px; display: none; }
+  .pub-modal-progress-bar { height: 100%; background: linear-gradient(90deg, var(--green-accent), var(--gold)); border-radius: 10px; width: 0%; transition: width 0.4s; }
+  .pub-modal-btns { display: flex; gap: 12px; justify-content: center; }
+  .pub-confirm-btn { background: var(--green-dark); color: var(--white); border: none; padding: 12px 28px; border-radius: 12px; font-family: 'Tajawal', sans-serif; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: background 0.2s; }
+  .pub-confirm-btn:hover { background: var(--green-mid); }
+  .pub-cancel-btn { background: #f0f4f1; color: var(--text-dark); border: none; padding: 12px 24px; border-radius: 12px; font-family: 'Tajawal', sans-serif; font-size: 0.95rem; font-weight: 600; cursor: pointer; }
+  .pub-cancel-btn:hover { background: #e0e8e2; }
+
+  .admin-body { max-width: 1200px; margin: 0 auto; padding: 32px clamp(12px,3vw,32px); }
+
+  /* Stats bar */
+  .stats-bar { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin-bottom: 32px; }
+  .stat-card { background: var(--white); border-radius: 16px; padding: 20px; text-align: center; box-shadow: 0 2px 12px rgba(26,74,46,0.06); border: 1px solid #e8f0eb; }
+  .stat-num { font-size: 2rem; font-weight: 800; color: var(--green-dark); }
+  .stat-label { font-size: 0.82rem; color: #8aaa9a; margin-top: 4px; }
+
+  /* Add Book Form */
+  .section-card { background: var(--white); border-radius: 20px; padding: 28px; box-shadow: 0 2px 12px rgba(26,74,46,0.06); border: 1px solid #e8f0eb; margin-bottom: 28px; }
+  .section-card h2 { font-family: 'Amiri', serif; font-size: 1.5rem; color: var(--green-dark); margin-bottom: 24px; display: flex; align-items: center; gap: 10px; }
+  .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-group.full { grid-column: 1 / -1; }
+  .form-group label { font-size: 0.82rem; color: var(--green-mid); font-weight: 600; }
+  .form-group input, .form-group textarea, .form-group select {
+    padding: 11px 14px; border: 1.5px solid #d0e8d8; border-radius: 10px;
+    font-family: 'Tajawal', sans-serif; font-size: 0.95rem; color: var(--text-dark);
+    background: var(--white); outline: none; transition: border-color 0.2s; direction: rtl;
+  }
+  .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: var(--green-accent); }
+  .form-group textarea { resize: vertical; min-height: 80px; }
+
+  /* Image upload */
+  .img-upload-area {
+    border: 2px dashed #b8d8c4; border-radius: 14px; padding: 28px 20px;
+    text-align: center; cursor: pointer; transition: all 0.3s; background: #f7fbf8;
+    position: relative;
+  }
+  .img-upload-area:hover, .img-upload-area.dragover { border-color: var(--green-accent); background: var(--green-pale); }
+  .img-upload-area input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+  .upload-icon { font-size: 2.5rem; margin-bottom: 10px; }
+  .upload-text { font-size: 0.88rem; color: #5a7a6a; }
+  .upload-text strong { color: var(--green-dark); }
+  .img-preview { width: 100%; max-height: 200px; object-fit: cover; border-radius: 10px; margin-top: 12px; display: none; }
+  .img-url-input { margin-top: 12px; }
+  .img-url-input input { width: 100%; }
+
+  /* Submit button */
+  .submit-btn {
+    background: var(--green-dark); color: var(--white); border: none;
+    padding: 13px 32px; border-radius: 12px; font-family: 'Tajawal', sans-serif;
+    font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.3s;
+    display: flex; align-items: center; gap: 8px; margin-top: 20px;
+  }
+  .submit-btn:hover { background: var(--green-mid); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(26,74,46,0.2); }
+  .submit-btn:disabled { background: #a0a0a0; cursor: not-allowed; transform: none; box-shadow: none; }
+  .submit-btn.loading::after { content: ''; width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.4); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Books table */
+  .books-table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+  th { background: #f0f6f2; color: var(--green-dark); font-weight: 700; padding: 12px 16px; text-align: right; border-bottom: 2px solid #d0e8d8; white-space: nowrap; }
+  td { padding: 14px 16px; border-bottom: 1px solid #eef4f0; vertical-align: middle; }
+  tr:hover td { background: #f7fbf8; }
+  .book-thumb { width: 56px; height: 72px; object-fit: cover; border-radius: 6px; border: 1px solid #d0e8d8; }
+  .book-thumb-placeholder { width: 56px; height: 72px; background: linear-gradient(135deg, var(--green-dark), var(--green-mid)); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; }
+  .badge-pill { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 0.72rem; font-weight: 700; background: var(--gold); color: var(--green-dark); }
+  .action-btns { display: flex; gap: 8px; }
+  .edit-btn { background: #e8f5e9; color: var(--green-dark); border: 1px solid #b8d8c4; padding: 6px 14px; border-radius: 8px; font-family: 'Tajawal', sans-serif; font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+  .edit-btn:hover { background: var(--green-pale); }
+  .del-btn { background: var(--red-light); color: var(--red); border: 1px solid #f5c6c2; padding: 6px 14px; border-radius: 8px; font-family: 'Tajawal', sans-serif; font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+  .del-btn:hover { background: #fbd7d4; }
+
+  /* Empty state */
+  .empty-state { text-align: center; padding: 48px 20px; color: #8aaa9a; }
+  .empty-state .empty-icon { font-size: 3rem; margin-bottom: 12px; }
+
+  /* Loading */
+  .table-loading { text-align: center; padding: 40px; color: var(--green-mid); }
+  .spinner { width: 36px; height: 36px; border: 3px solid var(--green-pale); border-top-color: var(--green-dark); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 12px; }
+
+  /* Toast */
+  .toast { position: fixed; bottom: 24px; right: 24px; background: var(--green-dark); color: var(--white); padding: 14px 22px; border-radius: 14px; font-size: 0.9rem; font-weight: 600; box-shadow: 0 8px 32px rgba(26,74,46,0.4); transform: translateY(80px); opacity: 0; transition: all 0.4s cubic-bezier(0.23,1,0.32,1); z-index: 9999; border-right: 4px solid var(--gold); }
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast.error { background: var(--red); border-right-color: #c0392b; }
+
+  /* Edit Modal */
+  .modal-overlay { position: fixed; inset: 0; background: rgba(13,43,26,0.6); z-index: 500; display: none; align-items: center; justify-content: center; backdrop-filter: blur(4px); padding: 20px; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: var(--white); border-radius: 20px; padding: 32px; width: 100%; max-width: 560px; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+  .modal h3 { font-family: 'Amiri', serif; font-size: 1.4rem; color: var(--green-dark); margin-bottom: 24px; }
+  .modal-footer { display: flex; gap: 12px; margin-top: 20px; justify-content: flex-end; }
+  .cancel-btn { background: #f0f4f1; color: var(--text-dark); border: none; padding: 11px 24px; border-radius: 10px; font-family: 'Tajawal', sans-serif; font-size: 0.95rem; font-weight: 600; cursor: pointer; }
+  .cancel-btn:hover { background: #e0e8e2; }
+
+  @media (max-width: 600px) {
+    .admin-body { padding: 16px 12px; }
+    .form-grid { grid-template-columns: 1fr; }
+    table { font-size: 0.82rem; }
+    th, td { padding: 10px 10px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">مكتبة على أثره</div>
+    <div class="login-sub">لوحة تحكم الأدمن</div>
+    <input type="password" id="pwdInput" placeholder="كلمة المرور" onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="login-btn" onclick="doLogin()">دخول</button>
+    <div class="login-error" id="loginError">كلمة المرور غير صحيحة</div>
+  </div>
+</div>
+
+<!-- ADMIN APP -->
+<div id="adminApp">
+  <header class="admin-header">
+    <div class="admin-header-inner">
+      <div class="admin-title">
+        لوحة التحكم
+        <span>مكتبة على أثره</span>
+      </div>
+      <div style="display:flex;gap:12px;align-items:center;">
+        <a href="index.html" target="_blank" style="color:var(--gold-light);font-size:0.85rem;text-decoration:none;">عرض الموقع ↗</a>
+        <button class="publish-btn" id="publishBtn" onclick="openPublishModal()">
+          <span class="pub-icon">🚀</span><span>نشر</span>
+        </button>
+        <button class="logout-btn" onclick="doLogout()">خروج</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="admin-body">
+
+    <!-- Stats -->
+    <div class="stats-bar">
+      <div class="stat-card">
+        <div class="stat-num" id="statTotal">—</div>
+        <div class="stat-label">إجمالي الكتب</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" id="statVisible">—</div>
+        <div class="stat-label">كتب ظاهرة</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" id="statWithImg">—</div>
+        <div class="stat-label">كتب بصورة</div>
+      </div>
+    </div>
+
+    <!-- Add Book Form -->
+    <div class="section-card">
+      <h2>➕ إضافة كتاب جديد</h2>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>عنوان الكتاب *</label>
+          <input type="text" id="fTitle" placeholder="مثال: الداء والدواء">
+        </div>
+        <div class="form-group">
+          <label>التصنيف *</label>
+          <input type="text" id="fCategory" placeholder="مثال: فقه القلوب">
+        </div>
+        <div class="form-group">
+          <label>السعر (شيقل) *</label>
+          <input type="number" id="fPrice" placeholder="49.99" min="0" step="0.01">
+        </div>
+        <div class="form-group">
+          <label>الشارة (اختياري)</label>
+          <input type="text" id="fBadge" placeholder="مثال: الأكثر مبيعاً">
+        </div>
+        <div class="form-group full">
+          <label>وصف الكتاب *</label>
+          <textarea id="fDesc" placeholder="وصف مختصر للكتاب..."></textarea>
+        </div>
+        <div class="form-group full">
+          <label>صورة الكتاب</label>
+          <div class="img-upload-area" id="uploadArea" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
+            <input type="file" id="fImageFile" accept="image/*" onchange="handleFileSelect(event)">
+            <div class="upload-icon">🖼️</div>
+            <div class="upload-text">
+              <strong>اسحب الصورة هنا</strong> أو اضغط للاختيار<br>
+              <span style="font-size:0.78rem;color:#8aaa9a;">PNG, JPG, WEBP — حجم أقصى 5MB</span>
+            </div>
+            <img class="img-preview" id="imgPreview" alt="معاينة">
+          </div>
+          <div class="img-url-input" style="margin-top:8px;">
+            <input type="text" id="fImageUrl" placeholder="أو أدخل رابط الصورة مباشرة (اختياري)">
+          </div>
+        </div>
+      </div>
+      <button class="submit-btn" id="addBtn" onclick="addBook()">
+        <span>حفظ الكتاب</span>
+      </button>
+    </div>
+
+    <!-- Books List -->
+    <div class="section-card">
+      <h2>📚 قائمة الكتب</h2>
+      <div class="books-table-wrap">
+        <div id="booksTableContainer">
+          <div class="table-loading">
+            <div class="spinner"></div>
+            <p>جاري التحميل...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal-overlay" id="editModal">
+  <div class="modal">
+    <h3>✏️ تعديل الكتاب</h3>
+    <input type="hidden" id="editId">
+    <div class="form-grid">
+      <div class="form-group">
+        <label>عنوان الكتاب *</label>
+        <input type="text" id="editTitle">
+      </div>
+      <div class="form-group">
+        <label>التصنيف *</label>
+        <input type="text" id="editCategory">
+      </div>
+      <div class="form-group">
+        <label>السعر (شيقل) *</label>
+        <input type="number" id="editPrice" min="0" step="0.01">
+      </div>
+      <div class="form-group">
+        <label>الشارة (اختياري)</label>
+        <input type="text" id="editBadge">
+      </div>
+      <div class="form-group full">
+        <label>وصف الكتاب *</label>
+        <textarea id="editDesc"></textarea>
+      </div>
+      <div class="form-group full">
+        <label>رابط الصورة</label>
+        <input type="text" id="editImageUrl" placeholder="رابط الصورة">
+        <img id="editImgPreview" style="width:100%;max-height:150px;object-fit:cover;border-radius:8px;margin-top:8px;display:none;" alt="معاينة">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="cancel-btn" onclick="closeEditModal()">إلغاء</button>
+      <button class="submit-btn" id="saveEditBtn" onclick="saveEdit()">
+        <span>حفظ التعديلات</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- PUBLISH MODAL -->
+<div class="pub-modal-overlay" id="pubModalOverlay">
+  <div class="pub-modal">
+    <div class="pub-modal-icon" id="pubModalIcon">🚀</div>
+    <div class="pub-modal-title" id="pubModalTitle">نشر الموقع</div>
+    <div class="pub-modal-msg" id="pubModalMsg">سيتم رفع آخر نسخة من الموقع على GitHub<br>وسينشر Netlify تلقائياً خلال دقيقة</div>
+    <div class="pub-modal-progress" id="pubProgress">
+      <div class="pub-modal-progress-bar" id="pubProgressBar"></div>
+    </div>
+    <div class="pub-modal-btns" id="pubModalBtns">
+      <button class="pub-confirm-btn" onclick="doPublish()">نشر الآن</button>
+      <button class="pub-cancel-btn" onclick="closePublishModal()">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ============================================================
+  // CONFIG
+  // ============================================================
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwOR0s-jAPH8e05pzsLy3y6px5fSf4GP2TOdkPSRavs7pvuFo3gMpgK4274F0kEdG8T/exec';
+  const ADMIN_PASSWORD = 'admin1234'; // ← غيّر كلمة المرور هنا
+
+  // ============================================================
+  // LOGIN
+  // ============================================================
+  function doLogin() {
+    const pwd = document.getElementById('pwdInput').value;
+    if (pwd === ADMIN_PASSWORD) {
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('adminApp').style.display = 'block';
+      sessionStorage.setItem('adminLoggedIn', '1');
+      loadBooksTable();
+    } else {
+      document.getElementById('loginError').style.display = 'block';
+      document.getElementById('pwdInput').value = '';
+    }
+  }
+
+  function doLogout() {
+    sessionStorage.removeItem('adminLoggedIn');
+    location.reload();
+  }
+
+  // Auto-login if session active
+  if (sessionStorage.getItem('adminLoggedIn') === '1') {
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('adminApp').style.display = 'block';
+    loadBooksTable();
+  }
+
+  // ============================================================
+  // IMAGE HANDLING
+  // ============================================================
+  let selectedImageBase64 = null;
+
+  function handleFileSelect(event) {
+    const file = event.target.files[0];
+    if (file) processImageFile(file);
+  }
+
+  function handleDragOver(e) { e.preventDefault(); document.getElementById('uploadArea').classList.add('dragover'); }
+  function handleDragLeave(e) { document.getElementById('uploadArea').classList.remove('dragover'); }
+  function handleDrop(e) {
+    e.preventDefault();
+    document.getElementById('uploadArea').classList.remove('dragover');
+    const file = e.dataTransfer.files[0];
+    if (file && file.type.startsWith('image/')) processImageFile(file);
+  }
+
+  function processImageFile(file) {
+    if (file.size > 5 * 1024 * 1024) { showToast('الصورة أكبر من 5MB', true); return; }
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      selectedImageBase64 = e.target.result;
+      const preview = document.getElementById('imgPreview');
+      preview.src = selectedImageBase64;
+      preview.style.display = 'block';
+      document.getElementById('fImageUrl').value = '';
+    };
+    reader.readAsDataURL(file);
+  }
+
+  // ============================================================
+  // ADD BOOK
+  // ============================================================
+  async function addBook() {
+    const title = document.getElementById('fTitle').value.trim();
+    const category = document.getElementById('fCategory').value.trim();
+    const price = document.getElementById('fPrice').value.trim();
+    const desc = document.getElementById('fDesc').value.trim();
+    const badge = document.getElementById('fBadge').value.trim();
+    const imageUrl = document.getElementById('fImageUrl').value.trim();
+
+    if (!title || !category || !price || !desc) {
+      showToast('يرجى تعبئة جميع الحقول المطلوبة', true); return;
+    }
+
+    const btn = document.getElementById('addBtn');
+    btn.disabled = true;
+    btn.classList.add('loading');
+    btn.querySelector('span').textContent = 'جاري الحفظ...';
+
+    try {
+      const payload = { action: 'addBook', title, category, price: parseFloat(price), description: desc, badge };
+
+      // If image file selected, upload it first
+      if (selectedImageBase64) {
+        payload.imageBase64 = selectedImageBase64;
+      } else if (imageUrl) {
+        payload.imageUrl = imageUrl;
+      }
+
+      const res = await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if (data.success) {
+        showToast('تمت إضافة الكتاب بنجاح ✓');
+        resetAddForm();
+        loadBooksTable();
+      } else {
+        showToast(data.error || 'حدث خطأ', true);
+      }
+    } catch (e) {
+      showToast('تعذّر الاتصال بالخادم', true);
+    }
+
+    btn.disabled = false;
+    btn.classList.remove('loading');
+    btn.querySelector('span').textContent = 'حفظ الكتاب';
+  }
+
+  function resetAddForm() {
+    ['fTitle','fCategory','fPrice','fDesc','fBadge','fImageUrl'].forEach(id => document.getElementById(id).value = '');
+    selectedImageBase64 = null;
+    const preview = document.getElementById('imgPreview');
+    preview.style.display = 'none';
+    preview.src = '';
+    document.getElementById('fImageFile').value = '';
+  }
+
+  // ============================================================
+  // LOAD BOOKS TABLE
+  // ============================================================
+  let allBooks = [];
+
+  async function loadBooksTable() {
+    const container = document.getElementById('booksTableContainer');
+    container.innerHTML = '<div class="table-loading"><div class="spinner"></div><p>جاري التحميل...</p></div>';
+    try {
+      const res = await fetch(APPS_SCRIPT_URL + '?action=getBooks&admin=1');
+      const data = await res.json();
+      allBooks = data.books || [];
+      renderTable();
+      updateStats();
+    } catch (e) {
+      container.innerHTML = '<p style="text-align:center;color:#c0392b;padding:40px;">تعذّر تحميل البيانات</p>';
+    }
+  }
+
+  function updateStats() {
+    document.getElementById('statTotal').textContent = allBooks.length;
+    document.getElementById('statVisible').textContent = allBooks.filter(b => b.visible !== false).length;
+    document.getElementById('statWithImg').textContent = allBooks.filter(b => b.imageUrl).length;
+  }
+
+  function renderTable() {
+    const container = document.getElementById('booksTableContainer');
+    if (allBooks.length === 0) {
+      container.innerHTML = '<div class="empty-state"><div class="empty-icon">📚</div><p>لا توجد كتب بعد. أضف أول كتاب!</p></div>';
+      return;
+    }
+    let rows = allBooks.map((book, i) => {
+      const thumb = book.imageUrl
+        ? `<img class="book-thumb" src="${book.imageUrl}" alt="${book.title}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
+        : '';
+      const placeholder = `<div class="book-thumb-placeholder" style="${book.imageUrl ? 'display:none' : ''}">📖</div>`;
+      const badge = book.badge ? `<span class="badge-pill">${book.badge}</span>` : '';
+      return `<tr>
+        <td>${thumb}${placeholder}</td>
+        <td><strong style="font-family:'Amiri',serif;font-size:1.05rem;">${book.title}</strong><br><span style="font-size:0.78rem;color:#8aaa9a;">${book.category}</span></td>
+        <td>${book.description ? book.description.substring(0,60) + (book.description.length > 60 ? '...' : '') : '—'}</td>
+        <td><strong>${parseFloat(book.price).toFixed(2)}</strong> ₪</td>
+        <td>${badge}</td>
+        <td>
+          <div class="action-btns">
+            <button class="edit-btn" onclick="openEditModal(${i})">تعديل</button>
+            <button class="del-btn" onclick="deleteBook('${book.id}', '${book.title.replace(/'/g,"\\'")}')">حذف</button>
+          </div>
+        </td>
+      </tr>`;
+    }).join('');
+
+    container.innerHTML = `<table>
+      <thead><tr>
+        <th>الصورة</th><th>الكتاب</th><th>الوصف</th><th>السعر</th><th>الشارة</th><th>الإجراءات</th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+  }
+
+  // ============================================================
+  // EDIT BOOK
+  // ============================================================
+  function openEditModal(index) {
+    const book = allBooks[index];
+    document.getElementById('editId').value = book.id;
+    document.getElementById('editTitle').value = book.title;
+    document.getElementById('editCategory').value = book.category;
+    document.getElementById('editPrice').value = book.price;
+    document.getElementById('editDesc').value = book.description || '';
+    document.getElementById('editBadge').value = book.badge || '';
+    document.getElementById('editImageUrl').value = book.imageUrl || '';
+    const prev = document.getElementById('editImgPreview');
+    if (book.imageUrl) { prev.src = book.imageUrl; prev.style.display = 'block'; }
+    else { prev.style.display = 'none'; }
+    document.getElementById('editModal').classList.add('open');
+  }
+
+  function closeEditModal() { document.getElementById('editModal').classList.remove('open'); }
+
+  document.getElementById('editImageUrl').addEventListener('input', function() {
+    const prev = document.getElementById('editImgPreview');
+    if (this.value) { prev.src = this.value; prev.style.display = 'block'; }
+    else { prev.style.display = 'none'; }
+  });
+
+  async function saveEdit() {
+    const id = document.getElementById('editId').value;
+    const title = document.getElementById('editTitle').value.trim();
+    const category = document.getElementById('editCategory').value.trim();
+    const price = document.getElementById('editPrice').value.trim();
+    const desc = document.getElementById('editDesc').value.trim();
+    const badge = document.getElementById('editBadge').value.trim();
+    const imageUrl = document.getElementById('editImageUrl').value.trim();
+    if (!title || !category || !price || !desc) { showToast('يرجى تعبئة جميع الحقول', true); return; }
+
+    const btn = document.getElementById('saveEditBtn');
+    btn.disabled = true; btn.classList.add('loading');
+    btn.querySelector('span').textContent = 'جاري الحفظ...';
+
+    try {
+      const res = await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify({ action: 'editBook', id, title, category, price: parseFloat(price), description: desc, badge, imageUrl })
+      });
+      const data = await res.json();
+      if (data.success) {
+        showToast('تم حفظ التعديلات ✓');
+        closeEditModal();
+        loadBooksTable();
+      } else {
+        showToast(data.error || 'حدث خطأ', true);
+      }
+    } catch (e) { showToast('تعذّر الاتصال', true); }
+
+    btn.disabled = false; btn.classList.remove('loading');
+    btn.querySelector('span').textContent = 'حفظ التعديلات';
+  }
+
+  // ============================================================
+  // DELETE BOOK
+  // ============================================================
+  async function deleteBook(id, title) {
+    if (!confirm('هل أنت متأكد من حذف "' + title + '"؟')) return;
+    try {
+      const res = await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify({ action: 'deleteBook', id })
+      });
+      const data = await res.json();
+      if (data.success) { showToast('تم حذف الكتاب ✓'); loadBooksTable(); }
+      else { showToast(data.error || 'حدث خطأ', true); }
+    } catch (e) { showToast('تعذّر الاتصال', true); }
+  }
+
+  // ============================================================
+  // TOAST
+  // ============================================================
+  function showToast(msg, isError = false) {
+    const t = document.getElementById('toast');
+    t.textContent = (isError ? '⚠️ ' : '✓ ') + msg;
+    t.className = 'toast' + (isError ? ' error' : '');
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3500);
+  }
+
+  // ============================================================
+  // PUBLISH TO GITHUB
+  // ============================================================
+  const GITHUB_TOKEN  = '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';
+  const GITHUB_REPO   = 'maramalasad/Ola-Books';
+  const GITHUB_BRANCH = 'main';
+
+  function openPublishModal() {
+    document.getElementById('pubModalIcon').textContent = '🚀';
+    document.getElementById('pubModalTitle').textContent = 'نشر الموقع';
+    document.getElementById('pubModalMsg').innerHTML = 'سيتم رفع آخر نسخة من الموقع على GitHub<br>وسينشر Netlify تلقائياً خلال دقيقة';
+    document.getElementById('pubProgress').style.display = 'none';
+    document.getElementById('pubProgressBar').style.width = '0%';
+    document.getElementById('pubModalBtns').style.display = 'flex';
+    document.getElementById('pubModalOverlay').classList.add('show');
+  }
+
+  function closePublishModal() {
+    document.getElementById('pubModalOverlay').classList.remove('show');
+  }
+
+  async function doPublish() {
+    const btn = document.querySelector('.pub-confirm-btn');
+    btn.disabled = true;
+    btn.textContent = 'جاري الرفع...';
+    document.getElementById('pubModalBtns').querySelector('.pub-cancel-btn').style.display = 'none';
+    document.getElementById('pubProgress').style.display = 'block';
+    document.getElementById('pubModalMsg').textContent = 'جاري رفع الملف...';
+
+    const setProgress = (p) => document.getElementById('pubProgressBar').style.width = p + '%';
+
+    try {
+      setProgress(20);
+      // 1. Get current file SHA from GitHub
+      const shaRes = await fetch(
+        `https://api.github.com/repos/${GITHUB_REPO}/contents/index.html`,
+        { headers: { 'Authorization': 'Bearer ' + GITHUB_TOKEN, 'Accept': 'application/vnd.github+json' } }
+      );
+      if (!shaRes.ok) throw new Error('تعذّر الوصول إلى GitHub');
+      const shaData = await shaRes.json();
+      const currentSha = shaData.sha;
+      setProgress(45);
+
+      // 2. Fetch the current index.html content from this page's origin
+      const htmlRes = await fetch(window.location.href.replace('admin.html','') + 'index.html');
+      if (!htmlRes.ok) throw new Error('تعذّر جلب ملف index.html');
+      const htmlText = await htmlRes.text();
+      setProgress(65);
+
+      // 3. Encode to base64
+      const encoded = btoa(unescape(encodeURIComponent(htmlText)));
+      setProgress(75);
+
+      // 4. Push to GitHub
+      const now = new Date().toLocaleString('ar-SA', { timeZone: 'Asia/Riyadh' });
+      const pushRes = await fetch(
+        `https://api.github.com/repos/${GITHUB_REPO}/contents/index.html`,
+        {
+          method: 'PUT',
+          headers: {
+            'Authorization': 'Bearer ' + GITHUB_TOKEN,
+            'Accept': 'application/vnd.github+json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            message: `تحديث الموقع — ${now}`,
+            content: encoded,
+            sha: currentSha,
+            branch: GITHUB_BRANCH
+          })
+        }
+      );
+      if (!pushRes.ok) {
+        const errData = await pushRes.json();
+        throw new Error(errData.message || 'فشل الرفع');
+      }
+      setProgress(100);
+
+      // Success
+      document.getElementById('pubModalIcon').textContent = '✅';
+      document.getElementById('pubModalTitle').textContent = 'تم النشر بنجاح!';
+      document.getElementById('pubModalMsg').innerHTML = 'تم رفع الملف على GitHub ✔<br>Netlify ينشر تلقائياً خلال دقيقة 🚀';
+      document.getElementById('pubModalBtns').innerHTML = '<button class="pub-confirm-btn" onclick="closePublishModal()">تم ✔</button>';
+    } catch (err) {
+      setProgress(0);
+      document.getElementById('pubModalIcon').textContent = '❌';
+      document.getElementById('pubModalTitle').textContent = 'فشل النشر';
+      document.getElementById('pubModalMsg').textContent = err.message || 'حدث خطأ غير متوقع';
+      document.getElementById('pubModalBtns').innerHTML =
+        '<button class="pub-confirm-btn" onclick="doPublish()">إعادة المحاولة</button>' +
+        '<button class="pub-cancel-btn" onclick="closePublishModal()">إغلاق</button>';
+      btn.disabled = false;
+    }
+  }
+</script>
+</body>
+</html>
