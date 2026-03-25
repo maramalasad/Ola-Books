@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>لوحة التحكم — مكتبة على أثره</title>
+<title>لوحة التحكم — على أثره</title>
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -14,7 +14,6 @@
     --gold: #c9a84c;
     --gold-light: #f0d080;
     --white: #ffffff;
-    --off-white: #f8faf8;
     --red: #e74c3c;
     --red-light: #fdecea;
     --text-dark: #0d2b1a;
@@ -22,128 +21,96 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html, body { width: 100%; min-height: 100vh; font-family: 'Tajawal', sans-serif; background: #f0f4f1; color: var(--text-dark); }
 
-  /* ===== LOGIN SCREEN ===== */
-  #loginScreen {
-    position: fixed; inset: 0; background: var(--green-dark);
-    display: flex; align-items: center; justify-content: center; z-index: 9999;
-  }
-  .login-box {
-    background: var(--white); border-radius: 24px; padding: 48px 40px;
-    width: 100%; max-width: 400px; text-align: center;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-  }
+  /* LOGIN */
+  #loginScreen { position: fixed; inset: 0; background: var(--green-dark); display: flex; align-items: center; justify-content: center; z-index: 9999; }
+  .login-box { background: var(--white); border-radius: 24px; padding: 48px 40px; width: 100%; max-width: 400px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
   .login-logo { font-family: 'Amiri', serif; font-size: 1.8rem; color: var(--green-dark); margin-bottom: 6px; }
   .login-sub { font-size: 0.85rem; color: #8aaa9a; margin-bottom: 32px; }
-  .login-box input {
-    width: 100%; padding: 14px 18px; border: 2px solid #d0e8d8; border-radius: 12px;
-    font-family: 'Tajawal', sans-serif; font-size: 1rem; text-align: center;
-    outline: none; margin-bottom: 16px; transition: border-color 0.2s;
-    direction: ltr; letter-spacing: 4px;
-  }
+  .login-box input { width: 100%; padding: 14px 18px; border: 2px solid #d0e8d8; border-radius: 12px; font-family: 'Tajawal', sans-serif; font-size: 1rem; text-align: center; outline: none; margin-bottom: 16px; transition: border-color 0.2s; direction: ltr; letter-spacing: 4px; }
   .login-box input:focus { border-color: var(--green-accent); }
-  .login-btn {
-    width: 100%; background: var(--green-dark); color: var(--white); border: none;
-    padding: 14px; border-radius: 12px; font-family: 'Tajawal', sans-serif;
-    font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.3s;
-  }
+  .login-btn { width: 100%; background: var(--green-dark); color: var(--white); border: none; padding: 14px; border-radius: 12px; font-family: 'Tajawal', sans-serif; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.3s; }
   .login-btn:hover { background: var(--green-mid); }
   .login-error { color: var(--red); font-size: 0.85rem; margin-top: 10px; display: none; }
 
-  /* ===== ADMIN LAYOUT ===== */
+  /* ADMIN LAYOUT */
   #adminApp { display: none; }
-  .admin-header {
-    background: var(--green-dark); padding: 0 clamp(16px,4vw,40px);
-    position: sticky; top: 0; z-index: 100;
-    box-shadow: 0 2px 20px rgba(13,43,26,0.5);
-  }
-  .admin-header-inner {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 16px 0; max-width: 1200px; margin: 0 auto;
-  }
+  .admin-header { background: var(--green-dark); padding: 0 clamp(16px,4vw,40px); position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 20px rgba(13,43,26,0.5); }
+  .admin-header-inner { display: flex; align-items: center; justify-content: space-between; padding: 16px 0; max-width: 1200px; margin: 0 auto; }
   .admin-title { font-family: 'Amiri', serif; color: var(--white); font-size: 1.4rem; }
   .admin-title span { color: var(--gold-light); font-size: 0.8rem; font-family: 'Tajawal', sans-serif; display: block; }
-  .logout-btn {
-    background: rgba(255,255,255,0.15); color: var(--white); border: none;
-    padding: 8px 18px; border-radius: 20px; font-family: 'Tajawal', sans-serif;
-    font-size: 0.88rem; cursor: pointer; transition: background 0.2s;
-  }
+  .logout-btn { background: rgba(255,255,255,0.15); color: var(--white); border: none; padding: 8px 18px; border-radius: 20px; font-family: 'Tajawal', sans-serif; font-size: 0.88rem; cursor: pointer; transition: background 0.2s; }
   .logout-btn:hover { background: rgba(255,255,255,0.25); }
-  .publish-btn {
-    background: var(--gold); color: var(--green-dark); border: none;
-    padding: 8px 20px; border-radius: 20px; font-family: 'Tajawal', sans-serif;
-    font-size: 0.88rem; font-weight: 700; cursor: pointer; transition: all 0.25s;
-    display: flex; align-items: center; gap: 7px;
-  }
-  .publish-btn:hover { background: var(--gold-light); transform: translateY(-1px); }
-  .publish-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
-  .publish-btn .pub-icon { font-size: 1rem; }
-  /* Publish Modal */
-  .pub-modal-overlay { position: fixed; inset: 0; background: rgba(13,43,26,0.55); z-index: 500; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(4px); opacity: 0; visibility: hidden; transition: all 0.3s; }
-  .pub-modal-overlay.show { opacity: 1; visibility: visible; }
-  .pub-modal { background: var(--white); border-radius: 20px; padding: 36px 32px; max-width: 420px; width: 92%; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.25); transform: translateY(20px); transition: transform 0.3s; }
-  .pub-modal-overlay.show .pub-modal { transform: translateY(0); }
-  .pub-modal-icon { font-size: 2.8rem; margin-bottom: 12px; }
-  .pub-modal-title { font-family: 'Amiri', serif; font-size: 1.5rem; color: var(--green-dark); margin-bottom: 8px; }
-  .pub-modal-msg { color: #5a7a6a; font-size: 0.92rem; line-height: 1.8; margin-bottom: 24px; }
-  .pub-modal-progress { width: 100%; height: 6px; background: #e8f0eb; border-radius: 10px; overflow: hidden; margin-bottom: 20px; display: none; }
-  .pub-modal-progress-bar { height: 100%; background: linear-gradient(90deg, var(--green-accent), var(--gold)); border-radius: 10px; width: 0%; transition: width 0.4s; }
-  .pub-modal-btns { display: flex; gap: 12px; justify-content: center; }
-  .pub-confirm-btn { background: var(--green-dark); color: var(--white); border: none; padding: 12px 28px; border-radius: 12px; font-family: 'Tajawal', sans-serif; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: background 0.2s; }
-  .pub-confirm-btn:hover { background: var(--green-mid); }
-  .pub-cancel-btn { background: #f0f4f1; color: var(--text-dark); border: none; padding: 12px 24px; border-radius: 12px; font-family: 'Tajawal', sans-serif; font-size: 0.95rem; font-weight: 600; cursor: pointer; }
-  .pub-cancel-btn:hover { background: #e0e8e2; }
+  .publish-btn { background: var(--gold); color: var(--green-dark); border: none; padding: 8px 20px; border-radius: 20px; font-family: 'Tajawal', sans-serif; font-size: 0.88rem; font-weight: 700; cursor: pointer; transition: all 0.25s; display: flex; align-items: center; gap: 7px; }
+  .publish-btn:hover { background: var(--gold-light); }
+
+  /* TABS - Desktop */
+  .admin-tabs { background: var(--green-dark); border-top: 1px solid rgba(255,255,255,0.08); }
+  .admin-tabs ul { display: flex; list-style: none; max-width: 1200px; margin: 0 auto; padding: 0 clamp(12px,3vw,32px); gap: 4px; overflow-x: auto; }
+  .admin-tabs ul li a { display: block; padding: 12px 18px; color: rgba(255,255,255,0.65); text-decoration: none; font-size: 0.88rem; font-weight: 500; white-space: nowrap; transition: all 0.2s; border-radius: 8px 8px 0 0; cursor: pointer; }
+  .admin-tabs ul li a:hover, .admin-tabs ul li a.active { color: var(--gold-light); background: rgba(201,168,76,0.12); }
+
+  /* MOBILE NAV HAMBURGER */
+  .admin-mobile-nav { display: none; }
+  .admin-mobile-nav-btn { background: rgba(255,255,255,0.15); border: none; color: var(--white); width: 40px; height: 40px; border-radius: 10px; font-size: 1.3rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s; flex-shrink: 0; }
+  .admin-mobile-nav-btn:hover { background: rgba(255,255,255,0.25); }
+  .admin-mobile-menu { position: fixed; top: 0; right: 0; width: 280px; height: 100%; background: var(--green-dark); z-index: 500; transform: translateX(100%); transition: transform 0.35s cubic-bezier(0.23,1,0.32,1); box-shadow: -6px 0 30px rgba(0,0,0,0.35); display: flex; flex-direction: column; overflow-y: auto; }
+  .admin-mobile-menu.open { transform: translateX(0); }
+  .admin-mobile-menu-header { display: flex; align-items: center; justify-content: space-between; padding: 20px 20px 16px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+  .admin-mobile-menu-title { font-family: 'Amiri', serif; color: var(--gold-light); font-size: 1.2rem; }
+  .admin-mobile-menu-close { background: rgba(255,255,255,0.12); border: none; color: var(--white); width: 36px; height: 36px; border-radius: 50%; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+  .admin-mobile-menu-close:hover { background: rgba(255,255,255,0.22); }
+  .admin-mobile-menu ul { list-style: none; padding: 12px 0; flex: 1; }
+  .admin-mobile-menu ul li a { display: flex; align-items: center; gap: 14px; padding: 15px 22px; color: rgba(255,255,255,0.75); font-size: 1rem; font-weight: 500; cursor: pointer; transition: all 0.2s; border-right: 3px solid transparent; }
+  .admin-mobile-menu ul li a:hover, .admin-mobile-menu ul li a.active { color: var(--gold-light); background: rgba(201,168,76,0.1); border-right-color: var(--gold); }
+  .admin-mobile-menu-icon { font-size: 1.3rem; width: 28px; text-align: center; }
+  .admin-mobile-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 499; display: none; backdrop-filter: blur(2px); }
+  .admin-mobile-overlay.open { display: block; }
+  .admin-mobile-actions { padding: 16px 20px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; gap: 10px; }
 
   .admin-body { max-width: 1200px; margin: 0 auto; padding: 32px clamp(12px,3vw,32px); }
+  .admin-tab-panel { display: none; }
+  .admin-tab-panel.active { display: block; }
 
-  /* Stats bar */
+  /* Stats */
   .stats-bar { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin-bottom: 32px; }
   .stat-card { background: var(--white); border-radius: 16px; padding: 20px; text-align: center; box-shadow: 0 2px 12px rgba(26,74,46,0.06); border: 1px solid #e8f0eb; }
   .stat-num { font-size: 2rem; font-weight: 800; color: var(--green-dark); }
   .stat-label { font-size: 0.82rem; color: #8aaa9a; margin-top: 4px; }
 
-  /* Add Book Form */
+  /* Cards */
   .section-card { background: var(--white); border-radius: 20px; padding: 28px; box-shadow: 0 2px 12px rgba(26,74,46,0.06); border: 1px solid #e8f0eb; margin-bottom: 28px; }
   .section-card h2 { font-family: 'Amiri', serif; font-size: 1.5rem; color: var(--green-dark); margin-bottom: 24px; display: flex; align-items: center; gap: 10px; }
+  .section-card h3 { font-family: 'Amiri', serif; font-size: 1.2rem; color: var(--green-dark); margin-bottom: 16px; }
   .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
   .form-group { display: flex; flex-direction: column; gap: 6px; }
   .form-group.full { grid-column: 1 / -1; }
   .form-group label { font-size: 0.82rem; color: var(--green-mid); font-weight: 600; }
-  .form-group input, .form-group textarea, .form-group select {
-    padding: 11px 14px; border: 1.5px solid #d0e8d8; border-radius: 10px;
-    font-family: 'Tajawal', sans-serif; font-size: 0.95rem; color: var(--text-dark);
-    background: var(--white); outline: none; transition: border-color 0.2s; direction: rtl;
-  }
+  .form-group input, .form-group textarea, .form-group select { padding: 11px 14px; border: 1.5px solid #d0e8d8; border-radius: 10px; font-family: 'Tajawal', sans-serif; font-size: 0.95rem; color: var(--text-dark); background: var(--white); outline: none; transition: border-color 0.2s; direction: rtl; }
   .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: var(--green-accent); }
   .form-group textarea { resize: vertical; min-height: 80px; }
+  .form-group input[type=checkbox] { width: 18px; height: 18px; cursor: pointer; direction: ltr; }
+  .checkbox-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; }
+  .checkbox-row label { font-size: 0.9rem; font-weight: 500; cursor: pointer; margin: 0; }
 
   /* Image upload */
-  .img-upload-area {
-    border: 2px dashed #b8d8c4; border-radius: 14px; padding: 28px 20px;
-    text-align: center; cursor: pointer; transition: all 0.3s; background: #f7fbf8;
-    position: relative;
-  }
+  .img-upload-area { border: 2px dashed #b8d8c4; border-radius: 14px; padding: 28px 20px; text-align: center; cursor: pointer; transition: all 0.3s; background: #f7fbf8; position: relative; }
   .img-upload-area:hover, .img-upload-area.dragover { border-color: var(--green-accent); background: var(--green-pale); }
   .img-upload-area input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
   .upload-icon { font-size: 2.5rem; margin-bottom: 10px; }
   .upload-text { font-size: 0.88rem; color: #5a7a6a; }
   .upload-text strong { color: var(--green-dark); }
   .img-preview { width: 100%; max-height: 200px; object-fit: cover; border-radius: 10px; margin-top: 12px; display: none; }
-  .img-url-input { margin-top: 12px; }
-  .img-url-input input { width: 100%; }
 
-  /* Submit button */
-  .submit-btn {
-    background: var(--green-dark); color: var(--white); border: none;
-    padding: 13px 32px; border-radius: 12px; font-family: 'Tajawal', sans-serif;
-    font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.3s;
-    display: flex; align-items: center; gap: 8px; margin-top: 20px;
-  }
-  .submit-btn:hover { background: var(--green-mid); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(26,74,46,0.2); }
-  .submit-btn:disabled { background: #a0a0a0; cursor: not-allowed; transform: none; box-shadow: none; }
+  /* Buttons */
+  .submit-btn { background: var(--green-dark); color: var(--white); border: none; padding: 13px 32px; border-radius: 12px; font-family: 'Tajawal', sans-serif; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; gap: 8px; }
+  .submit-btn:hover { background: var(--green-mid); transform: translateY(-1px); }
+  .submit-btn:disabled { background: #a0a0a0; cursor: not-allowed; transform: none; }
   .submit-btn.loading::after { content: ''; width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.4); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
+  .save-content-btn { background: var(--green-accent); color: var(--white); border: none; padding: 12px 28px; border-radius: 12px; font-family: 'Tajawal', sans-serif; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; gap: 8px; margin-top: 20px; }
+  .save-content-btn:hover { background: var(--green-mid); }
 
-  /* Books table */
+  /* Table */
   .books-table-wrap { overflow-x: auto; }
   table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
   th { background: #f0f6f2; color: var(--green-dark); font-weight: 700; padding: 12px 16px; text-align: right; border-bottom: 2px solid #d0e8d8; white-space: nowrap; }
@@ -152,17 +119,55 @@
   .book-thumb { width: 56px; height: 72px; object-fit: cover; border-radius: 6px; border: 1px solid #d0e8d8; }
   .book-thumb-placeholder { width: 56px; height: 72px; background: linear-gradient(135deg, var(--green-dark), var(--green-mid)); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; }
   .badge-pill { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 0.72rem; font-weight: 700; background: var(--gold); color: var(--green-dark); }
-  .action-btns { display: flex; gap: 8px; }
+  .action-btns { display: flex; gap: 8px; flex-wrap: wrap; }
   .edit-btn { background: #e8f5e9; color: var(--green-dark); border: 1px solid #b8d8c4; padding: 6px 14px; border-radius: 8px; font-family: 'Tajawal', sans-serif; font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
   .edit-btn:hover { background: var(--green-pale); }
   .del-btn { background: var(--red-light); color: var(--red); border: 1px solid #f5c6c2; padding: 6px 14px; border-radius: 8px; font-family: 'Tajawal', sans-serif; font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
   .del-btn:hover { background: #fbd7d4; }
 
-  /* Empty state */
+  /* Category Manager */
+  .cat-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; min-height: 60px; }
+  .cat-item { display: flex; align-items: center; gap: 12px; background: #f7fbf8; border: 1.5px solid #d6eedd; border-radius: 12px; padding: 12px 16px; cursor: grab; transition: all 0.2s; }
+  .cat-item:active { cursor: grabbing; }
+  .cat-item.dragging { opacity: 0.4; background: var(--green-pale); }
+  .cat-item.drag-over { border-color: var(--gold); background: #fff8e8; }
+  .cat-drag-handle { color: #8aaa9a; font-size: 1.2rem; cursor: grab; }
+  .cat-name { flex: 1; font-weight: 600; color: var(--green-dark); font-size: 0.95rem; }
+  .cat-desc { font-size: 0.78rem; color: #7a9a88; margin-top: 2px; }
+  .cat-info { flex: 1; }
+  .cat-bg-dot { width: 16px; height: 16px; border-radius: 50%; border: 1.5px solid #d0e8d8; flex-shrink: 0; }
+  .cat-actions { display: flex; gap: 6px; }
+  .cat-edit-btn { background: #e8f5e9; color: var(--green-dark); border: 1px solid #b8d8c4; padding: 4px 12px; border-radius: 8px; font-family: 'Tajawal', sans-serif; font-size: 0.78rem; cursor: pointer; }
+  .cat-del-btn { background: var(--red-light); color: var(--red); border: 1px solid #f5c6c2; padding: 4px 12px; border-radius: 8px; font-family: 'Tajawal', sans-serif; font-size: 0.78rem; cursor: pointer; }
+  .add-cat-form { background: #f7fbf8; border: 1.5px dashed #b8d8c4; border-radius: 14px; padding: 20px; }
+  .add-cat-form h4 { font-family: 'Amiri', serif; color: var(--green-dark); margin-bottom: 14px; }
+  .cat-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .cat-form-grid .full { grid-column: 1/-1; }
+  .cat-form-grid input, .cat-form-grid textarea { padding: 10px 14px; border: 1.5px solid #d0e8d8; border-radius: 10px; font-family: 'Tajawal', sans-serif; font-size: 0.9rem; color: var(--text-dark); background: var(--white); outline: none; direction: rtl; width: 100%; }
+  .cat-form-grid textarea { min-height: 60px; resize: vertical; }
+  .color-pick-wrap { display: flex; align-items: center; gap: 10px; }
+  .color-pick-wrap input[type=color] { width: 40px; height: 36px; border: 1.5px solid #d0e8d8; border-radius: 8px; cursor: pointer; padding: 2px; }
+  .add-cat-btn { background: var(--green-dark); color: var(--white); border: none; padding: 10px 24px; border-radius: 10px; font-family: 'Tajawal', sans-serif; font-size: 0.9rem; font-weight: 700; cursor: pointer; transition: all 0.3s; }
+  .add-cat-btn:hover { background: var(--green-mid); }
+
+  /* Discount & regions */
+  .toggle-switch { position: relative; display: inline-block; width: 48px; height: 26px; }
+  .toggle-switch input { opacity: 0; width: 0; height: 0; }
+  .toggle-slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background: #c0d8c8; border-radius: 26px; transition: 0.3s; }
+  .toggle-slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 3px; background: white; border-radius: 50%; transition: 0.3s; }
+  input:checked + .toggle-slider { background: var(--green-accent); }
+  input:checked + .toggle-slider:before { transform: translateX(22px); }
+  .region-editor { margin-bottom: 12px; }
+  .region-row { display: flex; gap: 10px; align-items: center; background: #f7fbf8; border: 1.5px solid #d6eedd; border-radius: 10px; padding: 10px 14px; margin-bottom: 8px; }
+  .region-row input { flex: 1; padding: 8px 12px; border: 1.5px solid #d0e8d8; border-radius: 8px; font-family: 'Tajawal', sans-serif; font-size: 0.9rem; outline: none; direction: rtl; }
+  .region-row input[type=number] { max-width: 80px; direction: ltr; }
+  .region-del { background: var(--red-light); color: var(--red); border: none; padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 0.8rem; }
+  .add-region-btn { background: transparent; border: 1.5px dashed #b8d8c4; color: var(--green-accent); padding: 10px 20px; border-radius: 10px; font-family: 'Tajawal', sans-serif; font-size: 0.88rem; font-weight: 600; cursor: pointer; width: 100%; transition: all 0.2s; }
+  .add-region-btn:hover { background: var(--green-pale); }
+
+  /* Empty/loading states */
   .empty-state { text-align: center; padding: 48px 20px; color: #8aaa9a; }
   .empty-state .empty-icon { font-size: 3rem; margin-bottom: 12px; }
-
-  /* Loading */
   .table-loading { text-align: center; padding: 40px; color: var(--green-mid); }
   .spinner { width: 36px; height: 36px; border: 3px solid var(--green-pale); border-top-color: var(--green-dark); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 12px; }
 
@@ -171,7 +176,7 @@
   .toast.show { transform: translateY(0); opacity: 1; }
   .toast.error { background: var(--red); border-right-color: #c0392b; }
 
-  /* Edit Modal */
+  /* Modals */
   .modal-overlay { position: fixed; inset: 0; background: rgba(13,43,26,0.6); z-index: 500; display: none; align-items: center; justify-content: center; backdrop-filter: blur(4px); padding: 20px; }
   .modal-overlay.open { display: flex; }
   .modal { background: var(--white); border-radius: 20px; padding: 32px; width: 100%; max-width: 560px; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
@@ -180,20 +185,38 @@
   .cancel-btn { background: #f0f4f1; color: var(--text-dark); border: none; padding: 11px 24px; border-radius: 10px; font-family: 'Tajawal', sans-serif; font-size: 0.95rem; font-weight: 600; cursor: pointer; }
   .cancel-btn:hover { background: #e0e8e2; }
 
-  @media (max-width: 600px) {
+  /* Publish modal */
+  .pub-modal-overlay { position: fixed; inset: 0; background: rgba(13,43,26,0.55); z-index: 500; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(4px); opacity: 0; visibility: hidden; transition: all 0.3s; }
+  .pub-modal-overlay.show { opacity: 1; visibility: visible; }
+  .pub-modal { background: var(--white); border-radius: 20px; padding: 36px 32px; max-width: 420px; width: 92%; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.25); }
+  .pub-modal-icon { font-size: 2.8rem; margin-bottom: 12px; }
+  .pub-modal-title { font-family: 'Amiri', serif; font-size: 1.5rem; color: var(--green-dark); margin-bottom: 8px; }
+  .pub-modal-msg { color: #5a7a6a; font-size: 0.92rem; line-height: 1.8; margin-bottom: 24px; }
+  .pub-modal-progress { width: 100%; height: 6px; background: #e8f0eb; border-radius: 10px; overflow: hidden; margin-bottom: 20px; display: none; }
+  .pub-modal-progress-bar { height: 100%; background: linear-gradient(90deg, var(--green-accent), var(--gold)); border-radius: 10px; width: 0%; transition: width 0.4s; }
+  .pub-modal-btns { display: flex; gap: 12px; justify-content: center; }
+  .pub-confirm-btn { background: var(--green-dark); color: var(--white); border: none; padding: 12px 28px; border-radius: 12px; font-family: 'Tajawal', sans-serif; font-size: 0.95rem; font-weight: 700; cursor: pointer; }
+  .pub-confirm-btn:hover { background: var(--green-mid); }
+  .pub-cancel-btn { background: #f0f4f1; color: var(--text-dark); border: none; padding: 12px 24px; border-radius: 12px; font-family: 'Tajawal', sans-serif; font-size: 0.95rem; cursor: pointer; }
+
+  @media (max-width: 768px) {
+    .admin-tabs { display: none; }
+    .admin-mobile-nav { display: flex; }
+    .admin-desktop-link { display: none; }
     .admin-body { padding: 16px 12px; }
     .form-grid { grid-template-columns: 1fr; }
     table { font-size: 0.82rem; }
     th, td { padding: 10px 10px; }
+    .cat-form-grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
 <body>
 
-<!-- LOGIN SCREEN -->
+<!-- LOGIN -->
 <div id="loginScreen">
   <div class="login-box">
-    <div class="login-logo">مكتبة على أثره</div>
+    <div class="login-logo">على أثره</div>
     <div class="login-sub">لوحة تحكم الأدمن</div>
     <input type="password" id="pwdInput" placeholder="كلمة المرور" onkeydown="if(event.key==='Enter')doLogin()">
     <button class="login-btn" onclick="doLogin()">دخول</button>
@@ -205,155 +228,265 @@
 <div id="adminApp">
   <header class="admin-header">
     <div class="admin-header-inner">
-      <div class="admin-title">
-        لوحة التحكم
-        <span>مكتبة على أثره</span>
-      </div>
-      <div style="display:flex;gap:12px;align-items:center;">
-        <a href="index.html" target="_blank" style="color:var(--gold-light);font-size:0.85rem;text-decoration:none;">عرض الموقع ↗</a>
-        <button class="publish-btn" id="publishBtn" onclick="openPublishModal()">
-          <span class="pub-icon">🚀</span><span>نشر</span>
-        </button>
-        <button class="logout-btn" onclick="doLogout()">خروج</button>
+      <div class="admin-title">لوحة التحكم <span>على أثره</span></div>
+      <div style="display:flex;gap:10px;align-items:center;">
+        <a href="index.html" target="_blank" style="color:var(--gold-light);font-size:0.85rem;text-decoration:none;" class="admin-desktop-link">عرض الموقع ↗</a>
+        <button class="publish-btn" onclick="openPublishModal()">🚀 نشر</button>
+        <button class="logout-btn admin-desktop-link" onclick="doLogout()">خروج</button>
+        <div class="admin-mobile-nav">
+          <button class="admin-mobile-nav-btn" onclick="toggleAdminMobileMenu()" aria-label="القائمة">☰</button>
+        </div>
       </div>
     </div>
   </header>
+  <div class="admin-tabs">
+    <ul>
+      <li><a class="active" onclick="switchAdminTab('books')">📚 الكتب</a></li>
+      <li><a onclick="switchAdminTab('categories')">🗂️ الفئات</a></li>
+      <li><a onclick="switchAdminTab('content')">✏️ محتوى الموقع</a></li>
+      <li><a onclick="switchAdminTab('discount')">🔥 العروض</a></li>
+      <li><a onclick="switchAdminTab('delivery')">🚚 التوصيل</a></li>
+    </ul>
+  </div>
+
+  <!-- MOBILE OVERLAY -->
+  <div class="admin-mobile-overlay" id="adminMobileOverlay" onclick="closeAdminMobileMenu()"></div>
+
+  <!-- MOBILE SIDE MENU -->
+  <div class="admin-mobile-menu" id="adminMobileMenu">
+    <div class="admin-mobile-menu-header">
+      <span class="admin-mobile-menu-title">القائمة</span>
+      <button class="admin-mobile-menu-close" onclick="closeAdminMobileMenu()">✕</button>
+    </div>
+    <ul>
+      <li><a class="active" onclick="switchAdminTabMobile('books')"><span class="admin-mobile-menu-icon">📚</span> الكتب</a></li>
+      <li><a onclick="switchAdminTabMobile('categories')"><span class="admin-mobile-menu-icon">🗂️</span> الفئات</a></li>
+      <li><a onclick="switchAdminTabMobile('content')"><span class="admin-mobile-menu-icon">✏️</span> محتوى الموقع</a></li>
+      <li><a onclick="switchAdminTabMobile('discount')"><span class="admin-mobile-menu-icon">🔥</span> العروض</a></li>
+      <li><a onclick="switchAdminTabMobile('delivery')"><span class="admin-mobile-menu-icon">🚚</span> التوصيل</a></li>
+    </ul>
+    <div class="admin-mobile-actions">
+      <a href="index.html" target="_blank" style="color:var(--gold-light);font-size:0.9rem;text-decoration:none;padding:10px 0;">عرض الموقع ↗</a>
+      <button class="logout-btn" onclick="doLogout()" style="width:100%;text-align:center;">خروج</button>
+    </div>
+  </div>
 
   <div class="admin-body">
 
-    <!-- Stats -->
-    <div class="stats-bar">
-      <div class="stat-card">
-        <div class="stat-num" id="statTotal">—</div>
-        <div class="stat-label">إجمالي الكتب</div>
+    <!-- TAB: BOOKS -->
+    <div class="admin-tab-panel active" id="tab-books">
+      <div class="stats-bar">
+        <div class="stat-card"><div class="stat-num" id="statTotal">—</div><div class="stat-label">إجمالي الكتب</div></div>
+        <div class="stat-card"><div class="stat-num" id="statWithImg">—</div><div class="stat-label">كتب بصورة</div></div>
+        <div class="stat-card"><div class="stat-num" id="statCats">—</div><div class="stat-label">الفئات</div></div>
+        <div class="stat-card"><div class="stat-num" id="statOutOfStock" style="color:var(--red)">—</div><div class="stat-label">نفد المخزون</div></div>
       </div>
-      <div class="stat-card">
-        <div class="stat-num" id="statVisible">—</div>
-        <div class="stat-label">كتب ظاهرة</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-num" id="statWithImg">—</div>
-        <div class="stat-label">كتب بصورة</div>
-      </div>
-    </div>
 
-    <!-- Add Book Form -->
-    <div class="section-card">
-      <h2>➕ إضافة كتاب جديد</h2>
-      <div class="form-grid">
-        <div class="form-group">
-          <label>عنوان الكتاب *</label>
-          <input type="text" id="fTitle" placeholder="مثال: الداء والدواء">
-        </div>
-        <div class="form-group">
-          <label>التصنيف *</label>
-          <input type="text" id="fCategory" placeholder="مثال: فقه القلوب">
-        </div>
-        <div class="form-group">
-          <label>السعر (شيقل) *</label>
-          <input type="number" id="fPrice" placeholder="49.99" min="0" step="0.01">
-        </div>
-        <div class="form-group">
-          <label>الشارة (اختياري)</label>
-          <input type="text" id="fBadge" placeholder="مثال: الأكثر مبيعاً">
-        </div>
-        <div class="form-group full">
-          <label>وصف الكتاب *</label>
-          <textarea id="fDesc" placeholder="وصف مختصر للكتاب..."></textarea>
-        </div>
-        <div class="form-group full">
-          <label>صورة الكتاب</label>
-          <div class="img-upload-area" id="uploadArea" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
-            <input type="file" id="fImageFile" accept="image/*" onchange="handleFileSelect(event)">
-            <div class="upload-icon">🖼️</div>
-            <div class="upload-text">
-              <strong>اسحب الصورة هنا</strong> أو اضغط للاختيار<br>
-              <span style="font-size:0.78rem;color:#8aaa9a;">PNG, JPG, WEBP — حجم أقصى 5MB</span>
+      <div class="section-card">
+        <h2>➕ إضافة كتاب جديد</h2>
+        <div class="form-grid">
+          <div class="form-group"><label>عنوان الكتاب *</label><input type="text" id="fTitle" placeholder="مثال: الداء والدواء"></div>
+          <div class="form-group"><label>التصنيف *</label>
+            <select id="fCategorySelect"><option value="">— اختر فئة —</option></select>
+          </div>
+          <div class="form-group"><label>السعر (شيقل) *</label><input type="number" id="fPrice" placeholder="49.99" min="0" step="0.01"></div>
+          <div class="form-group"><label>الشارة (اختياري)</label><input type="text" id="fBadge" placeholder="مثال: الأكثر مبيعاً"></div>
+          <div class="form-group"><label>نسبة الخصم % (اختياري)</label><input type="number" id="fDiscount" placeholder="0" min="0" max="100" step="1"></div>
+          <div class="form-group"><label>الكمية في المخزون</label><input type="number" id="fStock" placeholder="مثال: 10" min="0" step="1"></div>
+          <div class="form-group"><label>تقييم النجوم (1-5)</label><input type="number" id="fRating" placeholder="5" min="1" max="5" step="0.5"></div>
+          <div class="form-group"><label>عدد التقييمات</label><input type="number" id="fRatingCount" placeholder="0" min="0"></div>
+          <div class="form-group full">
+            <div class="checkbox-row"><input type="checkbox" id="fFeatured"><label for="fFeatured">⭐ كتاب مميز (يظهر في الرئيسية)</label></div>
+          </div>
+          <div class="form-group full"><label>وصف الكتاب *</label><textarea id="fDesc" placeholder="وصف مختصر للكتاب..."></textarea></div>
+          <div class="form-group full">
+            <label>الصورة الرئيسية للكتاب</label>
+            <div class="img-upload-area" id="uploadArea" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
+              <input type="file" id="fImageFile" accept="image/*" onchange="handleFileSelect(event)">
+              <div class="upload-icon">🖼️</div>
+              <div class="upload-text"><strong>اسحب الصورة هنا</strong> أو اضغط للاختيار<br><span style="font-size:0.78rem;color:#8aaa9a;">PNG, JPG, WEBP — حجم أقصى 5MB</span></div>
+              <img class="img-preview" id="imgPreview" alt="معاينة">
             </div>
-            <img class="img-preview" id="imgPreview" alt="معاينة">
+            <div style="margin-top:8px;"><input type="text" id="fImageUrl" placeholder="أو أدخل رابط الصورة مباشرة" style="width:100%;padding:10px 14px;border:1.5px solid #d0e8d8;border-radius:10px;font-family:'Tajawal',sans-serif;font-size:0.95rem;direction:rtl;outline:none;"></div>
           </div>
-          <div class="img-url-input" style="margin-top:8px;">
-            <input type="text" id="fImageUrl" placeholder="أو أدخل رابط الصورة مباشرة (اختياري)">
+          <div class="form-group full">
+            <label>صور إضافية للكتاب (اختياري)</label>
+            <p style="font-size:0.78rem;color:#8aaa9a;margin-bottom:10px;">أضف روابط صور إضافية تظهر للعميل عند الضغط على صورة الكتاب</p>
+            <div id="fExtraImagesContainer"></div>
+            <button type="button" onclick="addExtraImageRow('fExtraImagesContainer')" style="background:transparent;border:1.5px dashed #b8d8c4;color:var(--green-accent);padding:9px 20px;border-radius:10px;font-family:'Tajawal',sans-serif;font-size:0.88rem;font-weight:600;cursor:pointer;width:100%;margin-top:4px;">+ إضافة صورة</button>
           </div>
         </div>
+        <button class="submit-btn" id="addBtn" onclick="addBook()"><span>حفظ الكتاب</span></button>
       </div>
-      <button class="submit-btn" id="addBtn" onclick="addBook()">
-        <span>حفظ الكتاب</span>
-      </button>
+
+      <div class="section-card">
+        <h2>📚 قائمة الكتب</h2>
+        <div class="books-table-wrap">
+          <div id="booksTableContainer"><div class="table-loading"><div class="spinner"></div><p>جاري التحميل...</p></div></div>
+        </div>
+      </div>
     </div>
 
-    <!-- Books List -->
-    <div class="section-card">
-      <h2>📚 قائمة الكتب</h2>
-      <div class="books-table-wrap">
-        <div id="booksTableContainer">
-          <div class="table-loading">
-            <div class="spinner"></div>
-            <p>جاري التحميل...</p>
+    <!-- TAB: CATEGORIES -->
+    <div class="admin-tab-panel" id="tab-categories">
+      <div class="section-card">
+        <h2>🗂️ إدارة الفئات</h2>
+        <p style="color:#5a7a6a;font-size:0.88rem;margin-bottom:20px;">اسحب الفئات لتغيير ترتيبها في الموقع</p>
+        <div class="cat-list" id="catList">
+          <div class="table-loading"><div class="spinner"></div><p>جاري التحميل...</p></div>
+        </div>
+        <div class="add-cat-form">
+          <h4>➕ إضافة فئة جديدة</h4>
+          <div class="cat-form-grid">
+            <input type="text" id="newCatName" placeholder="اسم الفئة *">
+            <input type="text" id="newCatDesc" placeholder="وصف مختصر (اختياري)">
+            <div class="full color-pick-wrap">
+              <span style="font-size:0.82rem;color:var(--green-mid);font-weight:600;">لون الخلفية (اختياري):</span>
+              <input type="color" id="newCatColor" value="#d8f3dc">
+            </div>
           </div>
+          <button class="add-cat-btn" onclick="addCategory()">إضافة الفئة</button>
         </div>
       </div>
+    </div>
+
+    <!-- TAB: CONTENT -->
+    <div class="admin-tab-panel" id="tab-content">
+      <div class="section-card">
+        <h2>✏️ محتوى الصفحة الرئيسية</h2>
+        <div class="form-grid">
+          <div class="form-group full"><label>النص التعريفي (الصفحة الرئيسية)</label><textarea id="cHeroAbout" placeholder="على أثره: متجر متخصص في بيع الكتب الموثوقة..."></textarea></div>
+          <div class="form-group full"><label>عنوان قسم الكتب المميزة</label><input type="text" id="cFeaturedTitle" placeholder="الكتب المميزة لهذا الشهر"></div>
+        </div>
+      </div>
+      <div class="section-card">
+        <h2>✏️ صفحة من نحن</h2>
+        <div class="form-grid">
+          <div class="form-group"><label>اسم المتجر</label><input type="text" id="cAboutTitle" placeholder="على أثره"></div>
+          <div class="form-group"><label>الشعار الثانوي</label><input type="text" id="cAboutSubtitle" placeholder="متجر متخصص في بيع الكتب الموثوقة"></div>
+          <div class="form-group full"><label>قصتنا</label><textarea id="cAboutStory" rows="4"></textarea></div>
+          <div class="form-group full"><label>لماذا بدأنا؟</label><textarea id="cAboutWhy" rows="4"></textarea></div>
+          <div class="form-group full"><label>رسالتنا</label><textarea id="cAboutMission" rows="4"></textarea></div>
+        </div>
+      </div>
+      <div class="section-card">
+        <h2>✏️ معلومات التواصل</h2>
+        <div class="form-grid">
+          <div class="form-group"><label>رقم الواتساب</label><input type="text" id="cPhone" placeholder="972526696351"></div>
+          <div class="form-group"><label>اسم الإنستغرام</label><input type="text" id="cInstagram" placeholder="ala.atharih"></div>
+        </div>
+      </div>
+      <button class="save-content-btn" onclick="saveContent()">💾 حفظ جميع التغييرات</button>
+    </div>
+
+    <!-- TAB: DISCOUNT -->
+    <div class="admin-tab-panel" id="tab-discount">
+      <div class="section-card">
+        <h2>🔥 عرض الشهر</h2>
+        <p style="color:#5a7a6a;font-size:0.88rem;margin-bottom:20px;">يظهر شريط الخصم في أعلى الموقع</p>
+        <div class="form-grid">
+          <div class="form-group full">
+            <div class="checkbox-row">
+              <label class="toggle-switch"><input type="checkbox" id="discountEnabled"><span class="toggle-slider"></span></label>
+              <label for="discountEnabled" style="font-size:0.95rem;font-weight:600;cursor:pointer;">تفعيل عرض الشهر</label>
+            </div>
+          </div>
+          <div class="form-group"><label>اسم الكتاب</label><input type="text" id="discountBook" placeholder="مثال: شرح الثلاثة أصول"></div>
+          <div class="form-group"><label>نسبة الخصم %</label><input type="number" id="discountPercent" placeholder="20" min="1" max="99"></div>
+        </div>
+        <button class="save-content-btn" onclick="saveContent()">💾 حفظ الإعدادات</button>
+      </div>
+    </div>
+
+    <!-- TAB: DELIVERY -->
+    <div class="admin-tab-panel" id="tab-delivery">
+      <div class="section-card">
+        <h2>🚚 مناطق التوصيل</h2>
+        <p style="color:#5a7a6a;font-size:0.88rem;margin-bottom:20px;">أضف وعدّل مناطق التوصيل ورسومها</p>
+        <div class="region-editor" id="regionEditor"></div>
+        <button class="add-region-btn" onclick="addRegionRow()">＋ إضافة منطقة</button>
+      </div>
+      <div class="section-card">
+        <h2>📋 سياسة المتجر</h2>
+        <div class="form-grid">
+          <div class="form-group full"><label>سياسة الشحن</label><textarea id="cPolicyShipping" rows="3"></textarea></div>
+          <div class="form-group full"><label>سياسة الاسترجاع</label><textarea id="cPolicyReturn" rows="2"></textarea></div>
+          <div class="form-group full"><label>طريقة الدفع</label><textarea id="cPolicyPayment" rows="2"></textarea></div>
+        </div>
+      </div>
+      <button class="save-content-btn" onclick="saveContent()">💾 حفظ التغييرات</button>
     </div>
 
   </div>
 </div>
 
-<!-- Edit Modal -->
+<!-- Edit Book Modal -->
 <div class="modal-overlay" id="editModal">
   <div class="modal">
     <h3>✏️ تعديل الكتاب</h3>
     <input type="hidden" id="editId">
     <div class="form-grid">
-      <div class="form-group">
-        <label>عنوان الكتاب *</label>
-        <input type="text" id="editTitle">
+      <div class="form-group"><label>عنوان الكتاب *</label><input type="text" id="editTitle"></div>
+      <div class="form-group"><label>التصنيف *</label><select id="editCategorySelect"></select></div>
+      <div class="form-group"><label>السعر (شيقل) *</label><input type="number" id="editPrice" min="0" step="0.01"></div>
+      <div class="form-group"><label>الشارة</label><input type="text" id="editBadge"></div>
+      <div class="form-group"><label>نسبة الخصم %</label><input type="number" id="editDiscount" min="0" max="100"></div>
+      <div class="form-group"><label>الكمية في المخزون</label><input type="number" id="editStock" min="0" step="1" placeholder="0"></div>
+      <div class="form-group"><label>تقييم النجوم</label><input type="number" id="editRating" min="1" max="5" step="0.5"></div>
+      <div class="form-group"><label>عدد التقييمات</label><input type="number" id="editRatingCount" min="0"></div>
+      <div class="form-group full">
+        <div class="checkbox-row"><input type="checkbox" id="editFeatured"><label for="editFeatured">⭐ كتاب مميز</label></div>
       </div>
-      <div class="form-group">
-        <label>التصنيف *</label>
-        <input type="text" id="editCategory">
-      </div>
-      <div class="form-group">
-        <label>السعر (شيقل) *</label>
-        <input type="number" id="editPrice" min="0" step="0.01">
-      </div>
-      <div class="form-group">
-        <label>الشارة (اختياري)</label>
-        <input type="text" id="editBadge">
+      <div class="form-group full"><label>وصف الكتاب *</label><textarea id="editDesc"></textarea></div>
+      <div class="form-group full"><label>رابط الصورة الرئيسية</label><input type="text" id="editImageUrl" placeholder="رابط الصورة">
+        <img id="editImgPreview" style="width:100%;max-height:150px;object-fit:cover;border-radius:8px;margin-top:8px;display:none;" alt="">
       </div>
       <div class="form-group full">
-        <label>وصف الكتاب *</label>
-        <textarea id="editDesc"></textarea>
-      </div>
-      <div class="form-group full">
-        <label>رابط الصورة</label>
-        <input type="text" id="editImageUrl" placeholder="رابط الصورة">
-        <img id="editImgPreview" style="width:100%;max-height:150px;object-fit:cover;border-radius:8px;margin-top:8px;display:none;" alt="معاينة">
+        <label>صور إضافية (اختياري)</label>
+        <p style="font-size:0.78rem;color:#8aaa9a;margin-bottom:10px;">أضف روابط صور إضافية تظهر للعميل عند الضغط على صورة الكتاب</p>
+        <div id="editExtraImagesContainer"></div>
+        <button type="button" onclick="addExtraImageRow('editExtraImagesContainer')" style="background:transparent;border:1.5px dashed #b8d8c4;color:var(--green-accent);padding:9px 20px;border-radius:10px;font-family:'Tajawal',sans-serif;font-size:0.88rem;font-weight:600;cursor:pointer;width:100%;margin-top:4px;">+ إضافة صورة</button>
       </div>
     </div>
     <div class="modal-footer">
       <button class="cancel-btn" onclick="closeEditModal()">إلغاء</button>
-      <button class="submit-btn" id="saveEditBtn" onclick="saveEdit()">
-        <span>حفظ التعديلات</span>
-      </button>
+      <button class="submit-btn" id="saveEditBtn" onclick="saveEdit()"><span>حفظ التعديلات</span></button>
     </div>
   </div>
 </div>
 
-<!-- Toast -->
+<!-- Edit Category Modal -->
+<div class="modal-overlay" id="editCatModal">
+  <div class="modal">
+    <h3>✏️ تعديل الفئة</h3>
+    <input type="hidden" id="editCatId">
+    <div class="form-grid">
+      <div class="form-group"><label>اسم الفئة *</label><input type="text" id="editCatName"></div>
+      <div class="form-group"><label>وصف مختصر</label><input type="text" id="editCatDesc"></div>
+      <div class="form-group full">
+        <label>لون الخلفية</label>
+        <div class="color-pick-wrap"><input type="color" id="editCatColor"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="cancel-btn" onclick="document.getElementById('editCatModal').classList.remove('open')">إلغاء</button>
+      <button class="submit-btn" onclick="saveEditCategory()"><span>حفظ</span></button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
-<!-- PUBLISH MODAL -->
+<!-- Publish Modal -->
 <div class="pub-modal-overlay" id="pubModalOverlay">
   <div class="pub-modal">
     <div class="pub-modal-icon" id="pubModalIcon">🚀</div>
     <div class="pub-modal-title" id="pubModalTitle">نشر الموقع</div>
     <div class="pub-modal-msg" id="pubModalMsg">سيتم رفع آخر نسخة من الموقع على GitHub<br>وسينشر Netlify تلقائياً خلال دقيقة</div>
-    <div class="pub-modal-progress" id="pubProgress">
-      <div class="pub-modal-progress-bar" id="pubProgressBar"></div>
-    </div>
+    <div class="pub-modal-progress" id="pubProgress"><div class="pub-modal-progress-bar" id="pubProgressBar"></div></div>
     <div class="pub-modal-btns" id="pubModalBtns">
       <button class="pub-confirm-btn" onclick="doPublish()">نشر الآن</button>
-      <button class="pub-cancel-btn" onclick="closePublishModal()">إلغاء</button>
+      <button class="pub-cancel-btn" onclick="document.getElementById('pubModalOverlay').classList.remove('show')">إلغاء</button>
     </div>
   </div>
 </div>
@@ -363,63 +496,176 @@
   // CONFIG
   // ============================================================
   const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwZXBlv8zSQKqOxvP4sxL01M6Tjj0zXBQdkINnWeYtauDxjHiiffl4KnAjW1InI3zI_LQ/exec';
-  const ADMIN_PASSWORD = 'admin1234'; // ← غيّر كلمة المرور هنا
+  const ADMIN_PASSWORD = 'admin1234';
+  const GITHUB_TOKEN  = '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';
+  const GITHUB_REPO   = 'maramalasad/Ola-Books';
+  const GITHUB_BRANCH = 'main';
 
   // ============================================================
   // LOGIN
   // ============================================================
   function doLogin() {
-    const pwd = document.getElementById('pwdInput').value;
-    if (pwd === ADMIN_PASSWORD) {
+    if (document.getElementById('pwdInput').value === ADMIN_PASSWORD) {
       document.getElementById('loginScreen').style.display = 'none';
       document.getElementById('adminApp').style.display = 'block';
       sessionStorage.setItem('adminLoggedIn', '1');
-      loadBooksTable();
+      initAdmin();
     } else {
       document.getElementById('loginError').style.display = 'block';
       document.getElementById('pwdInput').value = '';
     }
   }
-
-  function doLogout() {
-    sessionStorage.removeItem('adminLoggedIn');
-    location.reload();
-  }
-
-  // Auto-login if session active
+  function doLogout() { sessionStorage.removeItem('adminLoggedIn'); location.reload(); }
   if (sessionStorage.getItem('adminLoggedIn') === '1') {
     document.getElementById('loginScreen').style.display = 'none';
     document.getElementById('adminApp').style.display = 'block';
-    loadBooksTable();
+    initAdmin();
+  }
+
+  // ============================================================
+  // ADMIN TABS
+  // ============================================================
+  function switchAdminTab(tab) {
+    document.querySelectorAll('.admin-tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.admin-tabs a').forEach(a => a.classList.remove('active'));
+    document.getElementById('tab-' + tab).classList.add('active');
+    event.target.classList.add('active');
+  }
+
+  function toggleAdminMobileMenu() {
+    document.getElementById('adminMobileMenu').classList.toggle('open');
+    document.getElementById('adminMobileOverlay').classList.toggle('open');
+    document.body.style.overflow = document.getElementById('adminMobileMenu').classList.contains('open') ? 'hidden' : '';
+  }
+
+  function closeAdminMobileMenu() {
+    document.getElementById('adminMobileMenu').classList.remove('open');
+    document.getElementById('adminMobileOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function switchAdminTabMobile(tab) {
+    // Switch tab content
+    document.querySelectorAll('.admin-tab-panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('tab-' + tab).classList.add('active');
+    // Update desktop tabs active state
+    document.querySelectorAll('.admin-tabs a').forEach(a => a.classList.remove('active'));
+    const desktopLink = document.querySelector(`.admin-tabs a[onclick*="${tab}"]`);
+    if (desktopLink) desktopLink.classList.add('active');
+    // Update mobile menu active state
+    document.querySelectorAll('.admin-mobile-menu ul li a').forEach(a => a.classList.remove('active'));
+    const mobileLink = document.querySelector(`.admin-mobile-menu ul li a[onclick*="${tab}"]`);
+    if (mobileLink) mobileLink.classList.add('active');
+    // Close menu
+    closeAdminMobileMenu();
+    // Scroll to top
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  }
+
+  // Close mobile menu on Escape
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeAdminMobileMenu();
+  });
+
+  // ============================================================
+  // STATE
+  // ============================================================
+  let allBooks = [];
+  let siteContent = {};
+  let categories = []; // [{id, name, desc, color, order}]
+
+  function initAdmin() {
+    loadAll();
+  }
+
+  async function loadAll() {
+    try {
+      const res = await fetch(APPS_SCRIPT_URL + '?action=getBooks&admin=1');
+      const data = await res.json();
+      allBooks = data.books || [];
+      siteContent = data.siteContent || {};
+      categories = data.categories || extractCategoriesFromBooks();
+      renderTable();
+      updateStats();
+      renderCatList();
+      fillContentForms();
+    // Initialize extra image rows
+    if (document.getElementById('fExtraImagesContainer').children.length === 0) addExtraImageRow('fExtraImagesContainer');
+      fillCategorySelects();
+    } catch(e) {
+      document.getElementById('booksTableContainer').innerHTML = '<p style="text-align:center;color:#c0392b;padding:40px;">تعذّر تحميل البيانات</p>';
+    }
+  }
+
+  function extractCategoriesFromBooks() {
+    const cats = [...new Set(allBooks.map(b=>b.category).filter(Boolean))];
+    return cats.map((name, i) => ({ id: 'cat_' + i, name, desc: '', color: '#d8f3dc', order: i }));
+  }
+
+  // ============================================================
+  // STATS
+  // ============================================================
+  function updateStats() {
+    document.getElementById('statTotal').textContent = allBooks.length;
+    document.getElementById('statWithImg').textContent = allBooks.filter(b => b.imageUrl).length;
+    document.getElementById('statCats').textContent = categories.length;
+    document.getElementById('statOutOfStock').textContent = allBooks.filter(b => b.stock !== undefined && b.stock !== '' && parseInt(b.stock) === 0).length;
+  }
+
+  // ============================================================
+  // BOOKS TABLE
+  // ============================================================
+  function renderTable() {
+    const container = document.getElementById('booksTableContainer');
+    if (allBooks.length === 0) {
+      container.innerHTML = '<div class="empty-state"><div class="empty-icon">📚</div><p>لا توجد كتب بعد. أضف أول كتاب!</p></div>';
+      return;
+    }
+    let rows = allBooks.map((book, i) => {
+      const thumb = book.imageUrl ? `<img class="book-thumb" src="${book.imageUrl}" alt="${book.title}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">` : '';
+      const placeholder = `<div class="book-thumb-placeholder" style="${book.imageUrl?'display:none':''}">📖</div>`;
+      const badge = book.badge ? `<span class="badge-pill">${book.badge}</span>` : '';
+      const featured = book.featured ? '⭐' : '';
+      const discount = book.discountPercent ? `<span style="background:#fdecea;color:#e74c3c;padding:2px 8px;border-radius:10px;font-size:0.72rem;font-weight:700;">-%${book.discountPercent}</span>` : '';
+      const stockVal = book.stock !== undefined && book.stock !== '' ? parseInt(book.stock) : null;
+      const stockBadge = stockVal === null ? '' : stockVal === 0 ? `<span style="background:#fdecea;color:#e74c3c;padding:2px 8px;border-radius:10px;font-size:0.72rem;font-weight:700;">نفد</span>` : `<span style="background:#e8f5e9;color:var(--green-dark);padding:2px 8px;border-radius:10px;font-size:0.72rem;font-weight:700;">${stockVal} نسخة</span>`;
+      const extraImgsCount = (book.extraImages && book.extraImages.length) ? `<span style="font-size:0.72rem;color:#8aaa9a;">🖼️ ${book.extraImages.length} صورة</span>` : '';
+      return `<tr>
+        <td>${thumb}${placeholder}</td>
+        <td><strong style="font-family:'Amiri',serif;font-size:1.05rem;">${book.title}</strong> ${featured}<br><span style="font-size:0.78rem;color:#8aaa9a;">${book.category}</span> ${extraImgsCount}</td>
+        <td>${book.description ? book.description.substring(0,50)+(book.description.length>50?'...':'') : '—'}</td>
+        <td><strong>${parseFloat(book.price).toFixed(2)}</strong> ₪ ${discount}<br>${stockBadge}</td>
+        <td>${badge}</td>
+        <td><div class="action-btns">
+          <button class="edit-btn" onclick="openEditModal(${i})">تعديل</button>
+          <button class="del-btn" onclick="deleteBook('${book.id}','${book.title.replace(/'/g,"\\''")}')">حذف</button>
+        </div></td>
+      </tr>`;
+    }).join('');
+    container.innerHTML = `<table><thead><tr><th>الصورة</th><th>الكتاب</th><th>الوصف</th><th>السعر / المخزون</th><th>الشارة</th><th>إجراءات</th></tr></thead><tbody>${rows}</tbody></table>`;
+  }
+
+  function fillCategorySelects() {
+    const opts = categories.map(c => `<option value="${c.name}">${c.name}</option>`).join('');
+    document.getElementById('fCategorySelect').innerHTML = '<option value="">— اختر فئة —</option>' + opts;
+    document.getElementById('editCategorySelect').innerHTML = opts;
   }
 
   // ============================================================
   // IMAGE HANDLING
   // ============================================================
   let selectedImageBase64 = null;
-
-  function handleFileSelect(event) {
-    const file = event.target.files[0];
-    if (file) processImageFile(file);
-  }
-
+  function handleFileSelect(e) { const f=e.target.files[0]; if(f) processImageFile(f); }
   function handleDragOver(e) { e.preventDefault(); document.getElementById('uploadArea').classList.add('dragover'); }
   function handleDragLeave(e) { document.getElementById('uploadArea').classList.remove('dragover'); }
-  function handleDrop(e) {
-    e.preventDefault();
-    document.getElementById('uploadArea').classList.remove('dragover');
-    const file = e.dataTransfer.files[0];
-    if (file && file.type.startsWith('image/')) processImageFile(file);
-  }
-
+  function handleDrop(e) { e.preventDefault(); document.getElementById('uploadArea').classList.remove('dragover'); const f=e.dataTransfer.files[0]; if(f&&f.type.startsWith('image/')) processImageFile(f); }
   function processImageFile(file) {
-    if (file.size > 5 * 1024 * 1024) { showToast('الصورة أكبر من 5MB', true); return; }
+    if (file.size > 5*1024*1024) { showToast('الصورة أكبر من 5MB', true); return; }
     const reader = new FileReader();
-    reader.onload = function(e) {
+    reader.onload = e => {
       selectedImageBase64 = e.target.result;
-      const preview = document.getElementById('imgPreview');
-      preview.src = selectedImageBase64;
-      preview.style.display = 'block';
+      const prev = document.getElementById('imgPreview');
+      prev.src = selectedImageBase64; prev.style.display = 'block';
       document.getElementById('fImageUrl').value = '';
     };
     reader.readAsDataURL(file);
@@ -428,180 +674,196 @@
   // ============================================================
   // ADD BOOK
   // ============================================================
+  function addExtraImageRow(containerId, value='') {
+    const container = document.getElementById(containerId);
+    const idx = container.querySelectorAll('.extra-img-row').length + 1;
+    const uid = 'exi_' + Date.now() + '_' + idx;
+    const row = document.createElement('div');
+    row.className = 'extra-img-row';
+    row.style.cssText = 'margin-bottom:12px;border:1.5px solid #d0e8d8;border-radius:12px;overflow:hidden;background:#f8fdf9;';
+
+    row.innerHTML = `
+      <div style="display:flex;align-items:center;gap:8px;padding:8px 10px;border-bottom:1px solid #e0f0e5;">
+        <img class="extra-img-preview" id="prev_${uid}" src="${value}" alt=""
+          style="width:48px;height:60px;object-fit:cover;border-radius:6px;border:1px solid #d0e8d8;${value?'':'display:none;'}">
+        <div style="flex:1;min-width:0;">
+          <input type="text" class="extra-img-url" id="url_${uid}" value="${value}"
+            placeholder="رابط الصورة ${idx}"
+            oninput="updateExtraPreview('${uid}')"
+            style="width:100%;padding:8px 12px;border:1.5px solid #d0e8d8;border-radius:8px;font-family:'Tajawal',sans-serif;font-size:0.88rem;direction:rtl;outline:none;box-sizing:border-box;">
+        </div>
+        <button type="button" onclick="this.closest('.extra-img-row').remove()"
+          style="background:var(--red-light);color:var(--red);border:none;padding:7px 12px;border-radius:8px;cursor:pointer;font-size:0.8rem;flex-shrink:0;">حذف</button>
+      </div>
+      <div style="display:flex;gap:0;">
+        <label style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:9px;cursor:pointer;font-size:0.82rem;color:var(--green-accent);font-weight:600;border-left:1px solid #e0f0e5;">
+          <input type="file" accept="image/*" style="display:none;" onchange="handleExtraFileSelect(event,'${uid}')">
+          📁 من الجهاز
+        </label>
+        <label style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:9px;cursor:pointer;font-size:0.82rem;color:var(--green-accent);font-weight:600;">
+          <input type="file" accept="image/*" capture="environment" style="display:none;" onchange="handleExtraFileSelect(event,'${uid}')">
+          📷 تصوير
+        </label>
+      </div>`;
+
+    container.appendChild(row);
+  }
+
+  function updateExtraPreview(uid) {
+    const url = document.getElementById('url_' + uid).value.trim();
+    const prev = document.getElementById('prev_' + uid);
+    if (url) { prev.src = url; prev.style.display = 'block'; }
+    else prev.style.display = 'none';
+  }
+
+  function handleExtraFileSelect(event, uid) {
+    const file = event.target.files[0];
+    if (!file) return;
+    if (file.size > 5 * 1024 * 1024) { showToast('حجم الصورة أكبر من 5MB', true); return; }
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const base64 = e.target.result;
+      // Upload to Cloudinary like main image
+      uploadExtraToCloudinary(base64, uid);
+    };
+    reader.readAsDataURL(file);
+  }
+
+  async function uploadExtraToCloudinary(base64, uid) {
+    const urlInput = document.getElementById('url_' + uid);
+    const prev = document.getElementById('prev_' + uid);
+    const originalValue = urlInput.value;
+    urlInput.value = 'جاري الرفع...';
+    urlInput.disabled = true;
+    // Show preview immediately from base64 while uploading
+    prev.src = base64;
+    prev.style.display = 'block';
+    try {
+      const res = await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify({ action: 'uploadImage', imageBase64: base64 })
+      });
+      const data = await res.json();
+      if (data.imageUrl) {
+        urlInput.value = data.imageUrl;
+        prev.src = data.imageUrl;
+        showToast('تم رفع الصورة ✓');
+      } else {
+        urlInput.value = '';
+        prev.style.display = 'none';
+        showToast('فشل رفع الصورة: ' + (data.error || 'خطأ غير معروف'), true);
+      }
+    } catch(e) {
+      urlInput.value = '';
+      prev.style.display = 'none';
+      showToast('تعذّر الاتصال بالخادم، حاولي مرة أخرى', true);
+    }
+    urlInput.disabled = false;
+  }
+
+  function getExtraImages(containerId) {
+    return Array.from(document.querySelectorAll('#' + containerId + ' .extra-img-url'))
+      .map(i => i.value.trim()).filter(v => v);
+  }
+
   async function addBook() {
     const title = document.getElementById('fTitle').value.trim();
-    const category = document.getElementById('fCategory').value.trim();
+    const category = document.getElementById('fCategorySelect').value;
     const price = document.getElementById('fPrice').value.trim();
     const desc = document.getElementById('fDesc').value.trim();
     const badge = document.getElementById('fBadge').value.trim();
     const imageUrl = document.getElementById('fImageUrl').value.trim();
-
-    if (!title || !category || !price || !desc) {
-      showToast('يرجى تعبئة جميع الحقول المطلوبة', true); return;
-    }
-
+    const discountPercent = document.getElementById('fDiscount').value.trim();
+    const stock = document.getElementById('fStock').value.trim();
+    const rating = document.getElementById('fRating').value.trim();
+    const ratingCount = document.getElementById('fRatingCount').value.trim();
+    const featured = document.getElementById('fFeatured').checked;
+    const extraImages = getExtraImages('fExtraImagesContainer');
+    if (!title || !category || !price || !desc) { showToast('يرجى تعبئة جميع الحقول المطلوبة', true); return; }
     const btn = document.getElementById('addBtn');
-    btn.disabled = true;
-    btn.classList.add('loading');
-    btn.querySelector('span').textContent = 'جاري الحفظ...';
-
+    btn.disabled = true; btn.classList.add('loading'); btn.querySelector('span').textContent = 'جاري الحفظ...';
     try {
-      const payload = { action: 'addBook', title, category, price: parseFloat(price), description: desc, badge };
-
-      // If image file selected, upload it first
-      if (selectedImageBase64) {
-        payload.imageBase64 = selectedImageBase64;
-      } else if (imageUrl) {
-        payload.imageUrl = imageUrl;
-      }
-
-      const res = await fetch(APPS_SCRIPT_URL, {
-        method: 'POST',
-        body: JSON.stringify(payload)
-      });
+      const payload = { action: 'addBook', title, category, price: parseFloat(price), description: desc, badge, discountPercent: discountPercent||0, stock: stock!==''?parseInt(stock):null, rating: rating||0, ratingCount: ratingCount||0, featured, extraImages };
+      if (selectedImageBase64) payload.imageBase64 = selectedImageBase64;
+      else if (imageUrl) payload.imageUrl = imageUrl;
+      const res = await fetch(APPS_SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
       const data = await res.json();
-      if (data.success) {
-        showToast('تمت إضافة الكتاب بنجاح ✓');
-        resetAddForm();
-        loadBooksTable();
-      } else {
-        showToast(data.error || 'حدث خطأ', true);
-      }
-    } catch (e) {
-      showToast('تعذّر الاتصال بالخادم', true);
-    }
-
-    btn.disabled = false;
-    btn.classList.remove('loading');
-    btn.querySelector('span').textContent = 'حفظ الكتاب';
+      if (data.success) { showToast('تمت إضافة الكتاب ✓'); resetAddForm(); loadAll(); }
+      else showToast(data.error || 'حدث خطأ', true);
+    } catch(e) { showToast('تعذّر الاتصال', true); }
+    btn.disabled = false; btn.classList.remove('loading'); btn.querySelector('span').textContent = 'حفظ الكتاب';
   }
 
   function resetAddForm() {
-    ['fTitle','fCategory','fPrice','fDesc','fBadge','fImageUrl'].forEach(id => document.getElementById(id).value = '');
+    ['fTitle','fPrice','fDesc','fBadge','fImageUrl','fDiscount','fStock','fRating','fRatingCount'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+    document.getElementById('fCategorySelect').value = '';
+    document.getElementById('fFeatured').checked = false;
     selectedImageBase64 = null;
-    const preview = document.getElementById('imgPreview');
-    preview.style.display = 'none';
-    preview.src = '';
+    const prev = document.getElementById('imgPreview');
+    prev.style.display = 'none'; prev.src = '';
     document.getElementById('fImageFile').value = '';
-  }
-
-  // ============================================================
-  // LOAD BOOKS TABLE
-  // ============================================================
-  let allBooks = [];
-
-  async function loadBooksTable() {
-    const container = document.getElementById('booksTableContainer');
-    container.innerHTML = '<div class="table-loading"><div class="spinner"></div><p>جاري التحميل...</p></div>';
-    try {
-      const res = await fetch(APPS_SCRIPT_URL + '?action=getBooks&admin=1');
-      const data = await res.json();
-      allBooks = data.books || [];
-      renderTable();
-      updateStats();
-    } catch (e) {
-      container.innerHTML = '<p style="text-align:center;color:#c0392b;padding:40px;">تعذّر تحميل البيانات</p>';
-    }
-  }
-
-  function updateStats() {
-    document.getElementById('statTotal').textContent = allBooks.length;
-    document.getElementById('statVisible').textContent = allBooks.filter(b => b.visible !== false).length;
-    document.getElementById('statWithImg').textContent = allBooks.filter(b => b.imageUrl).length;
-  }
-
-  function renderTable() {
-    const container = document.getElementById('booksTableContainer');
-    if (allBooks.length === 0) {
-      container.innerHTML = '<div class="empty-state"><div class="empty-icon">📚</div><p>لا توجد كتب بعد. أضف أول كتاب!</p></div>';
-      return;
-    }
-    let rows = allBooks.map((book, i) => {
-      const thumb = book.imageUrl
-        ? `<img class="book-thumb" src="${book.imageUrl}" alt="${book.title}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
-        : '';
-      const placeholder = `<div class="book-thumb-placeholder" style="${book.imageUrl ? 'display:none' : ''}">📖</div>`;
-      const badge = book.badge ? `<span class="badge-pill">${book.badge}</span>` : '';
-      return `<tr>
-        <td>${thumb}${placeholder}</td>
-        <td><strong style="font-family:'Amiri',serif;font-size:1.05rem;">${book.title}</strong><br><span style="font-size:0.78rem;color:#8aaa9a;">${book.category}</span></td>
-        <td>${book.description ? book.description.substring(0,60) + (book.description.length > 60 ? '...' : '') : '—'}</td>
-        <td><strong>${parseFloat(book.price).toFixed(2)}</strong> ₪</td>
-        <td>${badge}</td>
-        <td>
-          <div class="action-btns">
-            <button class="edit-btn" onclick="openEditModal(${i})">تعديل</button>
-            <button class="del-btn" onclick="deleteBook('${book.id}', '${book.title.replace(/'/g,"\\'")}')">حذف</button>
-          </div>
-        </td>
-      </tr>`;
-    }).join('');
-
-    container.innerHTML = `<table>
-      <thead><tr>
-        <th>الصورة</th><th>الكتاب</th><th>الوصف</th><th>السعر</th><th>الشارة</th><th>الإجراءات</th>
-      </tr></thead>
-      <tbody>${rows}</tbody>
-    </table>`;
+    // reset extra images
+    const ec = document.getElementById('fExtraImagesContainer');
+    ec.innerHTML = '';
+    addExtraImageRow('fExtraImagesContainer');
   }
 
   // ============================================================
   // EDIT BOOK
   // ============================================================
-  function openEditModal(index) {
-    const book = allBooks[index];
+  function openEditModal(i) {
+    const book = allBooks[i];
     document.getElementById('editId').value = book.id;
     document.getElementById('editTitle').value = book.title;
-    document.getElementById('editCategory').value = book.category;
+    document.getElementById('editCategorySelect').value = book.category;
     document.getElementById('editPrice').value = book.price;
     document.getElementById('editDesc').value = book.description || '';
     document.getElementById('editBadge').value = book.badge || '';
+    document.getElementById('editDiscount').value = book.discountPercent || '';
+    document.getElementById('editStock').value = book.stock !== undefined ? book.stock : '';
+    document.getElementById('editRating').value = book.rating || '';
+    document.getElementById('editRatingCount').value = book.ratingCount || '';
+    document.getElementById('editFeatured').checked = !!book.featured;
     document.getElementById('editImageUrl').value = book.imageUrl || '';
     const prev = document.getElementById('editImgPreview');
-    if (book.imageUrl) { prev.src = book.imageUrl; prev.style.display = 'block'; }
-    else { prev.style.display = 'none'; }
+    if (book.imageUrl) { prev.src = book.imageUrl; prev.style.display = 'block'; } else prev.style.display = 'none';
+    // Extra images
+    const ec = document.getElementById('editExtraImagesContainer');
+    ec.innerHTML = '';
+    const extras = book.extraImages || [];
+    if (extras.length > 0) extras.forEach(url => addExtraImageRow('editExtraImagesContainer', url));
+    else addExtraImageRow('editExtraImagesContainer');
     document.getElementById('editModal').classList.add('open');
   }
-
   function closeEditModal() { document.getElementById('editModal').classList.remove('open'); }
-
   document.getElementById('editImageUrl').addEventListener('input', function() {
     const prev = document.getElementById('editImgPreview');
-    if (this.value) { prev.src = this.value; prev.style.display = 'block'; }
-    else { prev.style.display = 'none'; }
+    if (this.value) { prev.src = this.value; prev.style.display = 'block'; } else prev.style.display = 'none';
   });
-
   async function saveEdit() {
     const id = document.getElementById('editId').value;
     const title = document.getElementById('editTitle').value.trim();
-    const category = document.getElementById('editCategory').value.trim();
+    const category = document.getElementById('editCategorySelect').value;
     const price = document.getElementById('editPrice').value.trim();
     const desc = document.getElementById('editDesc').value.trim();
     const badge = document.getElementById('editBadge').value.trim();
     const imageUrl = document.getElementById('editImageUrl').value.trim();
+    const discountPercent = document.getElementById('editDiscount').value.trim();
+    const stockRaw = document.getElementById('editStock').value.trim();
+    const rating = document.getElementById('editRating').value.trim();
+    const ratingCount = document.getElementById('editRatingCount').value.trim();
+    const featured = document.getElementById('editFeatured').checked;
+    const extraImages = getExtraImages('editExtraImagesContainer');
     if (!title || !category || !price || !desc) { showToast('يرجى تعبئة جميع الحقول', true); return; }
-
     const btn = document.getElementById('saveEditBtn');
-    btn.disabled = true; btn.classList.add('loading');
-    btn.querySelector('span').textContent = 'جاري الحفظ...';
-
+    btn.disabled = true; btn.classList.add('loading'); btn.querySelector('span').textContent = 'جاري الحفظ...';
     try {
-      const res = await fetch(APPS_SCRIPT_URL, {
-        method: 'POST',
-        body: JSON.stringify({ action: 'editBook', id, title, category, price: parseFloat(price), description: desc, badge, imageUrl })
-      });
+      const res = await fetch(APPS_SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: 'editBook', id, title, category, price: parseFloat(price), description: desc, badge, imageUrl, discountPercent: discountPercent||0, stock: stockRaw!==''?parseInt(stockRaw):null, rating: rating||0, ratingCount: ratingCount||0, featured, extraImages }) });
       const data = await res.json();
-      if (data.success) {
-        showToast('تم حفظ التعديلات ✓');
-        closeEditModal();
-        loadBooksTable();
-      } else {
-        showToast(data.error || 'حدث خطأ', true);
-      }
-    } catch (e) { showToast('تعذّر الاتصال', true); }
-
-    btn.disabled = false; btn.classList.remove('loading');
-    btn.querySelector('span').textContent = 'حفظ التعديلات';
+      if (data.success) { showToast('تم حفظ التعديلات ✓'); closeEditModal(); loadAll(); }
+      else showToast(data.error || 'حدث خطأ', true);
+    } catch(e) { showToast('تعذّر الاتصال', true); }
+    btn.disabled = false; btn.classList.remove('loading'); btn.querySelector('span').textContent = 'حفظ التعديلات';
   }
 
   // ============================================================
@@ -610,20 +872,208 @@
   async function deleteBook(id, title) {
     if (!confirm('هل أنت متأكد من حذف "' + title + '"؟')) return;
     try {
+      const res = await fetch(APPS_SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: 'deleteBook', id }) });
+      const data = await res.json();
+      if (data.success) { showToast('تم حذف الكتاب ✓'); loadAll(); }
+      else showToast(data.error || 'حدث خطأ', true);
+    } catch(e) { showToast('تعذّر الاتصال', true); }
+  }
+
+  // ============================================================
+  // CATEGORIES
+  // ============================================================
+  function renderCatList() {
+    const list = document.getElementById('catList');
+    if (categories.length === 0) {
+      list.innerHTML = '<p style="text-align:center;color:#8aaa9a;padding:20px;">لا توجد فئات بعد. أضف أول فئة!</p>';
+      return;
+    }
+    list.innerHTML = '';
+    categories.forEach((cat, i) => {
+      const item = document.createElement('div');
+      item.className = 'cat-item';
+      item.dataset.index = i;
+      item.draggable = true;
+      item.innerHTML = `
+        <span class="cat-drag-handle">⠿</span>
+        <div class="cat-bg-dot" style="background:${cat.color||'#d8f3dc'}"></div>
+        <div class="cat-info">
+          <div class="cat-name">${cat.name}</div>
+          ${cat.desc ? `<div class="cat-desc">${cat.desc}</div>` : ''}
+        </div>
+        <div class="cat-actions">
+          <button class="cat-edit-btn" onclick="openEditCatModal(${i})">تعديل</button>
+          <button class="cat-del-btn" onclick="deleteCategory(${i})">حذف</button>
+        </div>`;
+      item.addEventListener('dragstart', onCatDragStart);
+      item.addEventListener('dragover', onCatDragOver);
+      item.addEventListener('dragleave', onCatDragLeave);
+      item.addEventListener('drop', onCatDrop);
+      item.addEventListener('dragend', onCatDragEnd);
+      list.appendChild(item);
+    });
+  }
+
+  let draggedCatIndex = null;
+  function onCatDragStart(e) { draggedCatIndex = parseInt(this.dataset.index); this.classList.add('dragging'); }
+  function onCatDragOver(e) { e.preventDefault(); this.classList.add('drag-over'); }
+  function onCatDragLeave() { this.classList.remove('drag-over'); }
+  function onCatDrop(e) {
+    e.preventDefault();
+    const targetIndex = parseInt(this.dataset.index);
+    if (draggedCatIndex === null || draggedCatIndex === targetIndex) return;
+    const moved = categories.splice(draggedCatIndex, 1)[0];
+    categories.splice(targetIndex, 0, moved);
+    renderCatList();
+    saveCategoryOrder();
+  }
+  function onCatDragEnd() { document.querySelectorAll('.cat-item').forEach(i => { i.classList.remove('dragging','drag-over'); }); draggedCatIndex = null; }
+
+  function addCategory() {
+    const name = document.getElementById('newCatName').value.trim();
+    const desc = document.getElementById('newCatDesc').value.trim();
+    const color = document.getElementById('newCatColor').value;
+    if (!name) { showToast('يرجى إدخال اسم الفئة', true); return; }
+    if (categories.find(c => c.name === name)) { showToast('هذه الفئة موجودة بالفعل', true); return; }
+    categories.push({ id: 'cat_' + Date.now(), name, desc, color, order: categories.length });
+    document.getElementById('newCatName').value = '';
+    document.getElementById('newCatDesc').value = '';
+    renderCatList();
+    fillCategorySelects();
+    saveCategoryOrder();
+    showToast('تمت إضافة الفئة ✓');
+  }
+
+  function deleteCategory(i) {
+    if (!confirm('حذف فئة "' + categories[i].name + '"؟')) return;
+    categories.splice(i, 1);
+    renderCatList();
+    fillCategorySelects();
+    saveCategoryOrder();
+    showToast('تم حذف الفئة');
+  }
+
+  function openEditCatModal(i) {
+    const cat = categories[i];
+    document.getElementById('editCatId').value = i;
+    document.getElementById('editCatName').value = cat.name;
+    document.getElementById('editCatDesc').value = cat.desc || '';
+    document.getElementById('editCatColor').value = cat.color || '#d8f3dc';
+    document.getElementById('editCatModal').classList.add('open');
+  }
+
+  function saveEditCategory() {
+    const i = parseInt(document.getElementById('editCatId').value);
+    const name = document.getElementById('editCatName').value.trim();
+    if (!name) { showToast('يرجى إدخال اسم', true); return; }
+    categories[i].name = name;
+    categories[i].desc = document.getElementById('editCatDesc').value.trim();
+    categories[i].color = document.getElementById('editCatColor').value;
+    document.getElementById('editCatModal').classList.remove('open');
+    renderCatList();
+    fillCategorySelects();
+    saveCategoryOrder();
+    showToast('تم حفظ التعديلات ✓');
+  }
+
+  async function saveCategoryOrder() {
+    try {
+      await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify({ action: 'saveCategories', categories: categories.map((c,i) => ({...c, order:i})) })
+      });
+    } catch(e) {}
+  }
+
+  // ============================================================
+  // CONTENT FORMS
+  // ============================================================
+  function fillContentForms() {
+    const c = siteContent;
+    if (!c) return;
+    const set = (id, val) => { const el=document.getElementById(id); if(el&&val!==undefined) el.value=val; };
+    set('cHeroAbout', c.heroAbout);
+    set('cFeaturedTitle', c.featuredTitle);
+    set('cAboutTitle', c.aboutTitle);
+    set('cAboutSubtitle', c.aboutSubtitle);
+    set('cAboutStory', c.aboutStory);
+    set('cAboutWhy', c.aboutWhy);
+    set('cAboutMission', c.aboutMission);
+    set('cPhone', c.phone);
+    set('cInstagram', c.instagram);
+    set('cPolicyShipping', c.policyShipping);
+    set('cPolicyReturn', c.policyReturn);
+    set('cPolicyPayment', c.policyPayment);
+    set('discountBook', c.discountBook);
+    set('discountPercent', c.discountPercent);
+    if (c.discountEnabled) document.getElementById('discountEnabled').checked = true;
+    // Regions
+    const regions = c.regions || [
+      {name:'رهط', fee:20}, {name:'الجنوب', fee:40}, {name:'الشمال', fee:70}
+    ];
+    const editor = document.getElementById('regionEditor');
+    editor.innerHTML = '';
+    regions.forEach(r => addRegionRow(r.name, r.fee));
+  }
+
+  function addRegionRow(name='', fee='') {
+    const editor = document.getElementById('regionEditor');
+    const row = document.createElement('div');
+    row.className = 'region-row';
+    row.innerHTML = `
+      <input type="text" value="${name}" placeholder="اسم المنطقة" class="region-name-input">
+      <input type="number" value="${fee}" placeholder="رسوم" class="region-fee-input">
+      <button class="region-del" onclick="this.parentElement.remove()">حذف</button>`;
+    editor.appendChild(row);
+  }
+
+  async function saveContent() {
+    const get = id => { const el=document.getElementById(id); return el ? el.value.trim() : ''; };
+    // Collect regions
+    const regions = [];
+    document.querySelectorAll('.region-row').forEach(row => {
+      const name = row.querySelector('.region-name-input').value.trim();
+      const fee = parseInt(row.querySelector('.region-fee-input').value);
+      if (name && fee) regions.push({name, fee});
+    });
+
+    const content = {
+      heroAbout: get('cHeroAbout'),
+      featuredTitle: get('cFeaturedTitle'),
+      aboutTitle: get('cAboutTitle'),
+      aboutSubtitle: get('cAboutSubtitle'),
+      aboutStory: get('cAboutStory'),
+      aboutWhy: get('cAboutWhy'),
+      aboutMission: get('cAboutMission'),
+      phone: get('cPhone'),
+      instagram: get('cInstagram'),
+      policyShipping: get('cPolicyShipping'),
+      policyReturn: get('cPolicyReturn'),
+      policyPayment: get('cPolicyPayment'),
+      discountEnabled: document.getElementById('discountEnabled').checked,
+      discountBook: get('discountBook'),
+      discountPercent: get('discountPercent'),
+      regions,
+      categoryOrder: categories.map(c => c.name)
+    };
+
+    try {
       const res = await fetch(APPS_SCRIPT_URL, {
         method: 'POST',
-        body: JSON.stringify({ action: 'deleteBook', id })
+        body: JSON.stringify({ action: 'saveSiteContent', content })
       });
       const data = await res.json();
-      if (data.success) { showToast('تم حذف الكتاب ✓'); loadBooksTable(); }
-      else { showToast(data.error || 'حدث خطأ', true); }
-    } catch (e) { showToast('تعذّر الاتصال', true); }
+      if (data.success) showToast('تم حفظ التغييرات ✓');
+      else showToast(data.error || 'حدث خطأ', true);
+    } catch(e) {
+      showToast('تعذّر الاتصال بالخادم', true);
+    }
   }
 
   // ============================================================
   // TOAST
   // ============================================================
-  function showToast(msg, isError = false) {
+  function showToast(msg, isError=false) {
     const t = document.getElementById('toast');
     t.textContent = (isError ? '⚠️ ' : '✓ ') + msg;
     t.className = 'toast' + (isError ? ' error' : '');
@@ -632,96 +1082,54 @@
   }
 
   // ============================================================
-  // PUBLISH TO GITHUB
+  // PUBLISH
   // ============================================================
-  const GITHUB_TOKEN  = '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';
-  const GITHUB_REPO   = 'maramalasad/Ola-Books';
-  const GITHUB_BRANCH = 'main';
-
   function openPublishModal() {
     document.getElementById('pubModalIcon').textContent = '🚀';
     document.getElementById('pubModalTitle').textContent = 'نشر الموقع';
     document.getElementById('pubModalMsg').innerHTML = 'سيتم رفع آخر نسخة من الموقع على GitHub<br>وسينشر Netlify تلقائياً خلال دقيقة';
     document.getElementById('pubProgress').style.display = 'none';
     document.getElementById('pubProgressBar').style.width = '0%';
-    document.getElementById('pubModalBtns').style.display = 'flex';
+    document.getElementById('pubModalBtns').innerHTML = '<button class="pub-confirm-btn" onclick="doPublish()">نشر الآن</button><button class="pub-cancel-btn" onclick="document.getElementById(\'pubModalOverlay\').classList.remove(\'show\')">إلغاء</button>';
     document.getElementById('pubModalOverlay').classList.add('show');
-  }
-
-  function closePublishModal() {
-    document.getElementById('pubModalOverlay').classList.remove('show');
   }
 
   async function doPublish() {
     const btn = document.querySelector('.pub-confirm-btn');
-    btn.disabled = true;
-    btn.textContent = 'جاري الرفع...';
-    document.getElementById('pubModalBtns').querySelector('.pub-cancel-btn').style.display = 'none';
+    btn.disabled = true; btn.textContent = 'جاري الرفع...';
+    document.querySelector('.pub-cancel-btn').style.display = 'none';
     document.getElementById('pubProgress').style.display = 'block';
     document.getElementById('pubModalMsg').textContent = 'جاري رفع الملف...';
-
-    const setProgress = (p) => document.getElementById('pubProgressBar').style.width = p + '%';
-
+    const setP = p => document.getElementById('pubProgressBar').style.width = p + '%';
     try {
-      setProgress(20);
-      // 1. Get current file SHA from GitHub
-      const shaRes = await fetch(
-        `https://api.github.com/repos/${GITHUB_REPO}/contents/index.html`,
-        { headers: { 'Authorization': 'Bearer ' + GITHUB_TOKEN, 'Accept': 'application/vnd.github+json' } }
-      );
+      setP(20);
+      const shaRes = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/index.html`, { headers: { 'Authorization': 'Bearer ' + GITHUB_TOKEN, 'Accept': 'application/vnd.github+json' } });
       if (!shaRes.ok) throw new Error('تعذّر الوصول إلى GitHub');
       const shaData = await shaRes.json();
-      const currentSha = shaData.sha;
-      setProgress(45);
-
-      // 2. Fetch the current index.html content from this page's origin
+      setP(45);
       const htmlRes = await fetch(window.location.href.replace('admin.html','') + 'index.html');
       if (!htmlRes.ok) throw new Error('تعذّر جلب ملف index.html');
       const htmlText = await htmlRes.text();
-      setProgress(65);
-
-      // 3. Encode to base64
+      setP(70);
       const encoded = btoa(unescape(encodeURIComponent(htmlText)));
-      setProgress(75);
-
-      // 4. Push to GitHub
+      setP(80);
       const now = new Date().toLocaleString('ar-SA', { timeZone: 'Asia/Riyadh' });
-      const pushRes = await fetch(
-        `https://api.github.com/repos/${GITHUB_REPO}/contents/index.html`,
-        {
-          method: 'PUT',
-          headers: {
-            'Authorization': 'Bearer ' + GITHUB_TOKEN,
-            'Accept': 'application/vnd.github+json',
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            message: `تحديث الموقع — ${now}`,
-            content: encoded,
-            sha: currentSha,
-            branch: GITHUB_BRANCH
-          })
-        }
-      );
-      if (!pushRes.ok) {
-        const errData = await pushRes.json();
-        throw new Error(errData.message || 'فشل الرفع');
-      }
-      setProgress(100);
-
-      // Success
+      const pushRes = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/index.html`, {
+        method: 'PUT',
+        headers: { 'Authorization': 'Bearer ' + GITHUB_TOKEN, 'Accept': 'application/vnd.github+json', 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: `تحديث الموقع — ${now}`, content: encoded, sha: shaData.sha, branch: GITHUB_BRANCH })
+      });
+      if (!pushRes.ok) { const e = await pushRes.json(); throw new Error(e.message||'فشل الرفع'); }
+      setP(100);
       document.getElementById('pubModalIcon').textContent = '✅';
       document.getElementById('pubModalTitle').textContent = 'تم النشر بنجاح!';
       document.getElementById('pubModalMsg').innerHTML = 'تم رفع الملف على GitHub ✔<br>Netlify ينشر تلقائياً خلال دقيقة 🚀';
-      document.getElementById('pubModalBtns').innerHTML = '<button class="pub-confirm-btn" onclick="closePublishModal()">تم ✔</button>';
-    } catch (err) {
-      setProgress(0);
+      document.getElementById('pubModalBtns').innerHTML = '<button class="pub-confirm-btn" onclick="document.getElementById(\'pubModalOverlay\').classList.remove(\'show\')">تم ✔</button>';
+    } catch(err) {
       document.getElementById('pubModalIcon').textContent = '❌';
       document.getElementById('pubModalTitle').textContent = 'فشل النشر';
-      document.getElementById('pubModalMsg').textContent = err.message || 'حدث خطأ غير متوقع';
-      document.getElementById('pubModalBtns').innerHTML =
-        '<button class="pub-confirm-btn" onclick="doPublish()">إعادة المحاولة</button>' +
-        '<button class="pub-cancel-btn" onclick="closePublishModal()">إغلاق</button>';
+      document.getElementById('pubModalMsg').textContent = err.message || 'حدث خطأ';
+      document.getElementById('pubModalBtns').innerHTML = '<button class="pub-confirm-btn" onclick="doPublish()">إعادة المحاولة</button><button class="pub-cancel-btn" onclick="document.getElementById(\'pubModalOverlay\').classList.remove(\'show\')">إغلاق</button>';
       btn.disabled = false;
     }
   }
