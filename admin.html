@@ -1103,21 +1103,23 @@
     const setP = p => document.getElementById('pubProgressBar').style.width = p + '%';
     try {
       setP(20);
+      // Fetch current index.html from GitHub API (more reliable than window.location)
       const shaRes = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/index.html`, { headers: { 'Authorization': 'Bearer ' + GITHUB_TOKEN, 'Accept': 'application/vnd.github+json' } });
       if (!shaRes.ok) throw new Error('تعذّر الوصول إلى GitHub');
       const shaData = await shaRes.json();
+      const currentSha = shaData.sha;
       setP(45);
-      const htmlRes = await fetch(window.location.href.replace('admin.html','') + 'index.html');
-      if (!htmlRes.ok) throw new Error('تعذّر جلب ملف index.html');
-      const htmlText = await htmlRes.text();
-      setP(70);
-      const encoded = btoa(unescape(encodeURIComponent(htmlText)));
+      // Decode current content from GitHub (base64)
+      const currentContent = atob(shaData.content.replace(/\n/g,''));
+      setP(60);
+      // Re-encode for upload
+      const encoded = btoa(unescape(encodeURIComponent(currentContent)));
       setP(80);
       const now = new Date().toLocaleString('ar-SA', { timeZone: 'Asia/Riyadh' });
       const pushRes = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/index.html`, {
         method: 'PUT',
         headers: { 'Authorization': 'Bearer ' + GITHUB_TOKEN, 'Accept': 'application/vnd.github+json', 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: `تحديث الموقع — ${now}`, content: encoded, sha: shaData.sha, branch: GITHUB_BRANCH })
+        body: JSON.stringify({ message: `تحديث الموقع — ${now}`, content: encoded, sha: currentSha, branch: GITHUB_BRANCH })
       });
       if (!pushRes.ok) { const e = await pushRes.json(); throw new Error(e.message||'فشل الرفع'); }
       setP(100);
