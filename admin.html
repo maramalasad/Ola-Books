@@ -783,9 +783,11 @@
     const btn = document.getElementById('addBtn');
     btn.disabled = true; btn.classList.add('loading'); btn.querySelector('span').textContent = 'جاري الحفظ...';
     try {
+      // Auto-set imageUrl from first extraImage if not explicitly provided
+      const resolvedImageUrl = imageUrl || (extraImages.length > 0 ? extraImages[0] : '');
       const payload = { action: 'addBook', title, category, price: parseFloat(price), description: desc, badge, discountPercent: discountPercent||0, stock: stock!==''?parseInt(stock):null, rating: rating||0, ratingCount: ratingCount||0, featured, extraImages };
       if (selectedImageBase64) payload.imageBase64 = selectedImageBase64;
-      else if (imageUrl) payload.imageUrl = imageUrl;
+      else if (resolvedImageUrl) payload.imageUrl = resolvedImageUrl;
       const res = await fetch(APPS_SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
       const data = await res.json();
       if (data.success) { showToast('تمت إضافة الكتاب ✓'); resetAddForm(); loadAll(); }
@@ -858,7 +860,9 @@
     const btn = document.getElementById('saveEditBtn');
     btn.disabled = true; btn.classList.add('loading'); btn.querySelector('span').textContent = 'جاري الحفظ...';
     try {
-      const res = await fetch(APPS_SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: 'editBook', id, title, category, price: parseFloat(price), description: desc, badge, imageUrl, discountPercent: discountPercent||0, stock: stockRaw!==''?parseInt(stockRaw):null, rating: rating||0, ratingCount: ratingCount||0, featured, extraImages }) });
+      // Auto-set imageUrl from first extraImage if not explicitly provided
+      const resolvedEditImageUrl = imageUrl || (extraImages.length > 0 ? extraImages[0] : '');
+      const res = await fetch(APPS_SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: 'editBook', id, title, category, price: parseFloat(price), description: desc, badge, imageUrl: resolvedEditImageUrl, discountPercent: discountPercent||0, stock: stockRaw!==''?parseInt(stockRaw):null, rating: rating||0, ratingCount: ratingCount||0, featured, extraImages }) });
       const data = await res.json();
       if (data.success) { showToast('تم حفظ التعديلات ✓'); closeEditModal(); loadAll(); }
       else showToast(data.error || 'حدث خطأ', true);
