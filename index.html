@@ -1058,16 +1058,15 @@
       ? `<div class="stock-badge low">\u062a\u0628\u0642\u0649 ${stockVal} \u0641\u0642\u0637</div>`
       : '';
 
-    // Gallery images
+       // Gallery images
     const allImages = [];
-
-
     if (book.imageUrl) allImages.push(book.imageUrl);
     if (book.extraImages && book.extraImages.length) book.extraImages.forEach(u => { if(u) allImages.push(u); });
     const hasGallery = allImages.length >= 1;
-
-    const optimizedCover = optimizeCloudinaryUrl(book.imageUrl, 400);
-    const coverHtml = book.imageUrl
+    // Use first available image as cover (imageUrl or first extraImage)
+    const coverImageUrl = book.imageUrl || (allImages.length > 0 ? allImages[0] : '');
+    const optimizedCover = optimizeCloudinaryUrl(coverImageUrl, 400);
+    const coverHtml = coverImageUrl
       ? `<img src="${optimizedCover}" alt="${book.title}" loading="lazy" decoding="async" onerror="this.parentNode.innerHTML='<div class=\\'book-cover-placeholder\\'><div class=\\'placeholder-inner\\'><span class=\\'placeholder-icon\\'>\u{1F4D6}</span><span class=\\'placeholder-title\\'>${book.title}</span></div></div>'">`
       : `<div class="book-cover-placeholder"><div class="placeholder-inner"><span class="placeholder-icon">\u{1F4D6}</span><span class="placeholder-title">${book.title}</span></div></div>`;
 
