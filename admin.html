@@ -1108,12 +1108,8 @@
       if (!shaRes.ok) throw new Error('تعذّر الوصول إلى GitHub');
       const shaData = await shaRes.json();
       const currentSha = shaData.sha;
-      setP(45);
-      // Decode current content from GitHub (base64)
-      const currentContent = atob(shaData.content.replace(/\n/g,''));
-      setP(60);
-      // Re-encode for upload
-      const encoded = btoa(unescape(encodeURIComponent(currentContent)));
+      // Use the base64 content directly from GitHub — no decode/re-encode to avoid Arabic corruption
+      const encoded = shaData.content.replace(/\n/g,'');
       setP(80);
       const now = new Date().toLocaleString('ar-SA', { timeZone: 'Asia/Riyadh' });
       const pushRes = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/index.html`, {
