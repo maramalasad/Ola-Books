@@ -1005,6 +1005,12 @@
     }, 150);
   });
 
+  // Cloudinary auto-optimize: compress & resize images automatically (global scope)
+  function optimizeCloudinaryUrl(url, width) {
+    if (!url || !url.includes('res.cloudinary.com')) return url;
+    return url.replace('/upload/', `/upload/q_auto,f_auto,w_${width},c_limit/`);
+  }
+
   function createBookCard(book, index) {
     const div = document.createElement('div');
     div.className = 'book-card';
@@ -1024,12 +1030,7 @@
 
     // Gallery images
     const allImages = [];
-    // Cloudinary auto-optimize: compress & resize images automatically
-    function optimizeCloudinaryUrl(url, width) {
-      if (!url || !url.includes('res.cloudinary.com')) return url;
-      // Insert transformation: quality auto, format auto, width limit
-      return url.replace('/upload/', `/upload/q_auto,f_auto,w_${width},c_limit/`);
-    }
+
 
     if (book.imageUrl) allImages.push(book.imageUrl);
     if (book.extraImages && book.extraImages.length) book.extraImages.forEach(u => { if(u) allImages.push(u); });
