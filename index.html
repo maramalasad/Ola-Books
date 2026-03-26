@@ -1061,10 +1061,12 @@
       ? `<div class="stock-badge low">\u062a\u0628\u0642\u0649 ${stockVal} \u0641\u0642\u0637</div>`
       : '';
 
-       // Gallery images
+       // Gallery images - deduplicate so imageUrl doesn't appear twice if it matches first extraImage
     const allImages = [];
     if (book.imageUrl) allImages.push(book.imageUrl);
-    if (book.extraImages && book.extraImages.length) book.extraImages.forEach(u => { if(u) allImages.push(u); });
+    if (book.extraImages && book.extraImages.length) {
+      book.extraImages.forEach(u => { if(u && !allImages.includes(u)) allImages.push(u); });
+    }
     const hasGallery = allImages.length >= 1;
     // Use first available image as cover (imageUrl or first extraImage)
     const coverImageUrl = book.imageUrl || (allImages.length > 0 ? allImages[0] : '');
