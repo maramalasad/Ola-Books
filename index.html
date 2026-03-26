@@ -932,7 +932,9 @@
     const prevBtn = document.getElementById(prevId);
     const nextBtn = document.getElementById(nextId);
 
-    const viewportWidth = document.getElementById(viewportId).offsetWidth || 900;
+    // Use window.innerWidth as fallback when viewport is hidden (offsetWidth=0 on mobile)
+    const viewportEl = document.getElementById(viewportId);
+    const viewportWidth = viewportEl.offsetWidth || window.innerWidth || 900;
     const perPage = viewportWidth < 600 ? 1 : viewportWidth < 900 ? 2 : 3;
 
     grid.innerHTML = '';
@@ -990,7 +992,8 @@
 
   function slideBooks(type, dir) {
     const viewportId = type === 'home' ? 'homeSliderViewport' : 'sliderViewport';
-    const vw = document.getElementById(viewportId).offsetWidth || 900;
+    const vwEl = document.getElementById(viewportId);
+    const vw = vwEl.offsetWidth || window.innerWidth || 900;
     const perPage = vw < 600 ? 1 : vw < 900 ? 2 : 3;
     const books = type === 'home' ? (allBooks.filter(b => b.featured || b.badge).length > 0 ? allBooks.filter(b => b.featured || b.badge) : allBooks.slice(0,6)) : filteredBooks;
     if (type === 'home') homeCurrentSlide -= dir;
