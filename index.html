@@ -1024,12 +1024,20 @@
 
     // Gallery images
     const allImages = [];
+    // Cloudinary auto-optimize: compress & resize images automatically
+    function optimizeCloudinaryUrl(url, width) {
+      if (!url || !url.includes('res.cloudinary.com')) return url;
+      // Insert transformation: quality auto, format auto, width limit
+      return url.replace('/upload/', `/upload/q_auto,f_auto,w_${width},c_limit/`);
+    }
+
     if (book.imageUrl) allImages.push(book.imageUrl);
     if (book.extraImages && book.extraImages.length) book.extraImages.forEach(u => { if(u) allImages.push(u); });
     const hasGallery = allImages.length > 1;
 
+    const optimizedCover = optimizeCloudinaryUrl(book.imageUrl, 400);
     const coverHtml = book.imageUrl
-      ? `<img src="${book.imageUrl}" alt="${book.title}" loading="lazy" decoding="async" onerror="this.parentNode.innerHTML='<div class=\\'book-cover-placeholder\\'><div class=\\'placeholder-inner\\'><span class=\\'placeholder-icon\\'>\u{1F4D6}</span><span class=\\'placeholder-title\\'>${book.title}</span></div></div>'">`
+      ? `<img src="${optimizedCover}" alt="${book.title}" loading="lazy" decoding="async" onerror="this.parentNode.innerHTML='<div class=\\'book-cover-placeholder\\'><div class=\\'placeholder-inner\\'><span class=\\'placeholder-icon\\'>\u{1F4D6}</span><span class=\\'placeholder-title\\'>${book.title}</span></div></div>'">`
       : `<div class="book-cover-placeholder"><div class="placeholder-inner"><span class="placeholder-icon">\u{1F4D6}</span><span class="placeholder-title">${book.title}</span></div></div>`;
 
     // Rating - interactive stars
@@ -1218,7 +1226,7 @@
     const thumbs = document.getElementById('imgGalleryThumbs');
     main.src = _galleryImages[_galleryIdx];
     thumbs.innerHTML = _galleryImages.map((url, i) =>
-      `<img class="img-gallery-thumb${i===_galleryIdx?' active':''}" src="${url}" onclick="setGalleryIdx(${i})" alt="">`
+      `<img class="img-gallery-thumb${i===_galleryIdx?' active':''}" src="${optimizeCloudinaryUrl(url,200)}" onclick="setGalleryIdx(${i})" alt="">`
     ).join('');
   }
 
