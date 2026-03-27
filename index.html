@@ -1109,7 +1109,7 @@
             <span class="price-value">${displayPrice} <span>\u0634\u064a\u0642\u0644</span></span>
             ${priceOriginal}
           </div>
-          <button class="add-btn" ${isOutOfStock ? 'disabled' : `onclick="addToCart(this,'${safeTitle}',${displayPrice},'\u{1F4D6}')"`}>
+          <button class="add-btn" ${isOutOfStock ? 'disabled' : `onclick="addToCart(this,'${safeTitle}',${displayPrice},'\u{1F4D6}','${book.id}')"`}>
             ${isOutOfStock ? '\u0646\u0641\u062f \u0627\u0644\u0645\u062e\u0632\u0648\u0646' : '\uff0b \u0623\u0636\u0641 \u0644\u0644\u0633\u0644\u0629'}
           </button>
         </div>
@@ -1128,9 +1128,9 @@
     loadBooks();
   });
 
-  function addToCart(btn, name, price, icon) {
+  function addToCart(btn, name, price, icon, bookId) {
     if (cart[name]) { cart[name].qty++; }
-    else { cart[name] = { price: parseFloat(price), icon, qty: 1 }; }
+    else { cart[name] = { price: parseFloat(price), icon, qty: 1, id: bookId || null }; }
     btn.classList.add('added');
     btn.textContent = '✓ تمت الإضافة';
     setTimeout(() => { btn.classList.remove('added'); btn.innerHTML = '＋ أضف للسلة'; }, 1500);
@@ -1230,6 +1230,20 @@
     const whatsappNum = (siteContent.phone || WHATSAPP_NUMBER).replace(/[^0-9]/g,'');
     const msg = '🛒 *طلب جديد من مكتبة على أثره*\n━━━━━━━━━━━━━━\n📚 *الكتب المطلوبة:*\n' + items + '\n\n💰 *قيمة الكتب:* ' + booksTotal.toFixed(2) + ' شيقل\n🚚 *رسوم التوصيل (' + selectedRegion + '):* ' + deliveryFee + ' شيقل\n✅ *الإجمالي الكلي:* ' + grandTotal.toFixed(2) + ' شيقل\n━━━━━━━━━━━━━━\n👤 *بيانات العميل:*\nالاسم: ' + name + '\nالهاتف: ' + phone + '\nالمنطقة: ' + selectedRegion + '\nالعنوان: ' + city + '\n' + (notes ? '📝 ملاحظات: ' + notes + '\n' : '') + '━━━━━━━━━━━━━━';
     window.open('https://wa.me/' + whatsappNum + '?text=' + encodeURIComponent(msg), '_blank');
+    // Reduce stock for each ordered book
+    reduceStockForOrder();
+  }
+  async function reduceStockForOrder() {
+    try {
+      const updates = Object.entries(cart)
+        .filter(([name, item]) => item.id)
+        .map(([name, item]) => ({ id: item.id, qty: item.qty }));
+      if (updates.length === 0) return;
+      await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify({ action: 'reduceStock', items: updates })
+      });
+    } catch(e) { /* silent fail */ }
   }
 
   function sendContactWhatsApp() {
