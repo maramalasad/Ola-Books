@@ -1179,6 +1179,14 @@
 
   function changeQty(name, delta) {
     if (!cart[name]) return;
+    if (delta > 0) {
+      const bookData = allBooks.find(b => b.id === cart[name].id || b.title === name);
+      const stockVal = bookData && bookData.stock !== undefined && bookData.stock !== null && bookData.stock !== '' ? parseInt(bookData.stock) : null;
+      if (stockVal !== null && cart[name].qty >= stockVal) {
+        alert('لا يمكن طلب أكثر من ' + stockVal + ' نسخة - هذا هو المخزون المتاح');
+        return;
+      }
+    }
     cart[name].qty += delta;
     if (cart[name].qty <= 0) delete cart[name];
     updateCartUI();
