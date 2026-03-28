@@ -359,6 +359,11 @@
   @media (min-width: 600px) and (max-width: 899px) {
     .skeleton-card { flex: 0 0 calc((100% - 28px) / 2); }
   }
+  /* ===== TOAST NOTIFICATION ===== */
+  #toast-container { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); z-index: 9999; display: flex; flex-direction: column; align-items: center; gap: 10px; pointer-events: none; }
+  .toast { background: var(--green-dark); color: var(--white); padding: 12px 24px; border-radius: 30px; font-family: 'Tajawal', sans-serif; font-size: 0.9rem; font-weight: 600; box-shadow: 0 4px 20px rgba(13,43,26,0.35); border-right: 4px solid var(--gold); direction: rtl; opacity: 0; transform: translateY(20px); transition: all 0.3s ease; pointer-events: none; white-space: nowrap; }
+  .toast.show { opacity: 1; transform: translateY(0); }
+  .toast.warning { border-right-color: #e74c3c; background: #1a1a2e; }
 </style>
 </head>
 <body>
@@ -1177,13 +1182,27 @@
     document.getElementById('totalPrice').textContent = total.toFixed(2) + ' شيقل';
   }
 
+  function showToast(msg, type) {
+    var container = document.getElementById('toast-container');
+    if (!container) {
+      container = document.createElement('div');
+      container.id = 'toast-container';
+      document.body.appendChild(container);
+    }
+    var t = document.createElement('div');
+    t.className = 'toast' + (type === 'warning' ? ' warning' : '');
+    t.textContent = msg;
+    container.appendChild(t);
+    setTimeout(function() { t.classList.add('show'); }, 10);
+    setTimeout(function() { t.classList.remove('show'); setTimeout(function() { t.remove(); }, 300); }, 3000);
+  }
   function changeQty(name, delta) {
     if (!cart[name]) return;
     if (delta > 0) {
       const bookData = allBooks.find(b => b.id === cart[name].id || b.title === name);
       const stockVal = bookData && bookData.stock !== undefined && bookData.stock !== null && bookData.stock !== '' ? parseInt(bookData.stock) : null;
       if (stockVal !== null && cart[name].qty >= stockVal) {
-        alert('لا يمكن طلب أكثر من ' + stockVal + ' نسخة - هذا هو المخزون المتاح');
+        showToast('⚠️ لا يمكن طلب أكثر من ' + stockVal + ' نسخة - هذا كل ما يتوفر', 'warning');
         return;
       }
     }
