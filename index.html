@@ -721,7 +721,7 @@
   const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwZXBlv8zSQKqOxvP4sxL01M6Tjj0zXBQdkINnWeYtauDxjHiiffl4KnAjW1InI3zI_LQ/exec';
   const WHATSAPP_NUMBER = '972526696351';
   const CACHE_KEY = 'alaatharih_books_v2';
-  const CACHE_TTL = 5 * 60 * 1000;
+  const CACHE_TTL = 30 * 60 * 1000;
 
   // ============================================================
   // PAGES
@@ -1300,10 +1300,16 @@
   function renderGallery() {
     const main = document.getElementById('imgGalleryMain');
     const thumbs = document.getElementById('imgGalleryThumbs');
-    main.src = _galleryImages[_galleryIdx];
-    thumbs.innerHTML = _galleryImages.map((url, i) =>
-      `<img class="img-gallery-thumb${i===_galleryIdx?' active':''}" src="${optimizeCloudinaryUrl(url,200)}" onclick="setGalleryIdx(${i})" alt="">`
-    ).join('');
+    main.src = optimizeCloudinaryUrl(_galleryImages[_galleryIdx], 900);
+    // إذا الـ thumbnails موجودة مسبقاً، نحدّث الـ active class فقط بدون إعادة بناء
+    const existingThumbs = thumbs.querySelectorAll('.img-gallery-thumb');
+    if (existingThumbs.length === _galleryImages.length) {
+      existingThumbs.forEach((el, i) => el.classList.toggle('active', i === _galleryIdx));
+    } else {
+      thumbs.innerHTML = _galleryImages.map((url, i) =>
+        `<img class="img-gallery-thumb${i===_galleryIdx?' active':''}" src="${optimizeCloudinaryUrl(url,200)}" onclick="setGalleryIdx(${i})" alt="">`
+      ).join('');
+    }
   }
 
   function setGalleryIdx(i) {
